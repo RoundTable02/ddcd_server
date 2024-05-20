@@ -52,7 +52,7 @@ public class NoticeController {
 
             Notice updatedNotice = NoticeService.update(id,request);
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(new Response(201, "공지가 성공적으로 등록되었습니다."));
+                    .body(new Response(201, "공지가 성공적으로 수정되었습니다."));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ExceptResponse(500, "서버 내부 오류", false));
         }
