@@ -26,10 +26,10 @@ public class MemberLoginService {
 
 
     @Transactional
-    public JwtToken signIn(String username, String password) {
+    public JwtToken signIn(String email, String password) {
 
         UsernamePasswordAuthenticationToken authenticationFilter
-                = new UsernamePasswordAuthenticationToken(username, password);
+                = new UsernamePasswordAuthenticationToken(email, password);
 
         Authentication authentication = null;
 
@@ -41,7 +41,7 @@ public class MemberLoginService {
 
         JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
 
-        Optional<Member> member = memberRepository.findByUsername(username);
+        Optional<Member> member = memberRepository.findByEmail(email);
         if (member.isPresent()) {
             member.get().setRefreshToken(jwtToken.getRefreshToken());
         }
@@ -51,9 +51,9 @@ public class MemberLoginService {
 
     // username, refreshToken으로 검증 -> accessToken 토큰 생성
     @Transactional
-    public String refresh(String username, String refreshToken) {
+    public String refresh(String email, String refreshToken) {
 
-        String refreshDBToken = memberRepository.findByUsername(username)
+        String refreshDBToken = memberRepository.findByEmail(email)
                 .map(user -> user.getRefreshToken())
                 .orElseThrow(() -> new UsernameNotFoundException("해당하는 회원을 찾을 수 없습니다."));
 
@@ -61,7 +61,7 @@ public class MemberLoginService {
             throw new SecurityException("Invalid JWT Token");
         }
 
-        return jwtTokenProvider.refreshAccessToken(username);
+        return jwtTokenProvider.refreshAccessToken(email);
     }
 
 }

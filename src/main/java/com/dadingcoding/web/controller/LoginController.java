@@ -18,7 +18,7 @@ public class LoginController {
 
     @PostMapping("/sign-in")
     public JwtToken signIn(@RequestBody MemberSignInDto memberSignInDto) {
-        JwtToken jwtToken = memberLoginService.signIn(memberSignInDto.getUsername(), memberSignInDto.getPassword());
+        JwtToken jwtToken = memberLoginService.signIn(memberSignInDto.getEmail(), memberSignInDto.getPassword());
 
         return jwtToken;
     }
@@ -27,9 +27,9 @@ public class LoginController {
     public AccessTokenDto refreshToken(@RequestBody MemberSignInDto memberSignInDto, @CookieValue("refreshToken") String refreshToken) {
         // Cookie -> RefreshToken 받아서
         // DB상의 Refresh 토큰과 동일 && 만료되지 않았는지 확인 -> 재발급
-        String accessToken = memberLoginService.refresh(memberSignInDto.getUsername(), refreshToken);
+        String accessToken = memberLoginService.refresh(memberSignInDto.getEmail(), refreshToken);
 
-        return new AccessTokenDto(memberSignInDto.getUsername(), accessToken);
+        return new AccessTokenDto(memberSignInDto.getEmail(), accessToken);
     }
 
     @PostMapping("/test")

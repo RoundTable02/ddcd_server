@@ -69,8 +69,8 @@ public class JwtTokenProvider {
                 .build();
     }
 
-    public String refreshAccessToken(String username) {
-        UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+    public String refreshAccessToken(String email) {
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
 
         Calendar accessTokenCal = Calendar.getInstance();
         accessTokenCal.setTime(new Date());
