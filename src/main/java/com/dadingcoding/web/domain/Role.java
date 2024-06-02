@@ -1,5 +1,5 @@
 package com.dadingcoding.web.domain;
 
 public enum Role {
-    MANAGER, MENTOR, MENTEE
+    MANAGER, PREMENTOR, MENTOR, MENTEE
 }
