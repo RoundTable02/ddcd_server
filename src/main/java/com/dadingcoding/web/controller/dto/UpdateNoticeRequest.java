@@ -1,5 +1,7 @@
-package com.dadingcoding.web.dto;
+package com.dadingcoding.web.controller.dto;
 
+import com.dadingcoding.web.domain.Member;
+import com.dadingcoding.web.domain.Notice;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

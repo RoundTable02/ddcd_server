@@ -2,10 +2,8 @@ package com.dadingcoding.web.controller;
 
 import com.dadingcoding.web.domain.Member;
 import com.dadingcoding.web.domain.Notice;
-import com.dadingcoding.web.domain.Role;
-import com.dadingcoding.web.dto.AddNoticeRequest;
-import com.dadingcoding.web.dto.NoticeResponse;
-import com.dadingcoding.web.dto.UpdateNoticeRequest;
+import com.dadingcoding.web.controller.dto.AddNoticeRequest;
+import com.dadingcoding.web.controller.dto.UpdateNoticeRequest;
 import com.dadingcoding.web.response.ExceptResponse;
 import com.dadingcoding.web.response.Response;
 import com.dadingcoding.web.service.NoticeService;
@@ -31,30 +29,24 @@ public class NoticeController {
     @PostMapping("/notice_register")
     public ResponseEntity<?> addNotice(@RequestBody AddNoticeRequest request, @AuthenticationPrincipal Member member) {
         try {
-            if(member.getRole() != Role.MANAGER) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new Response(403, "권한이 없는 접근"));
-            }
-
-            noticeService.save(request);
+            noticeService.save(request, member);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new Response(201, "공지가 성공적으로 등록되었습니다."));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ExceptResponse(500, "서버 내부 오류", false));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ExceptResponse(500, "서버 내부 오류", false));
         }
     }
 
     @PutMapping("/notice-modify/{id}")   //id를 전달받아야 하는데, request에 id가 없다 -> 주소에 담아서 주거나 어떤 형태로든 받아야 함
     public ResponseEntity<?> updateNotice(@PathVariable long id, @RequestBody UpdateNoticeRequest request, @AuthenticationPrincipal Member member) {
         try {
-            if(member.getRole() != Role.MANAGER) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new Response(403, "권한이 없는 접근"));
-            }
-
-            Notice updatedNotice = NoticeService.update(id,request);
+            Notice updatedNotice = noticeService.update(id, request);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new Response(201, "공지가 성공적으로 수정되었습니다."));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ExceptResponse(500, "서버 내부 오류", false));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ExceptResponse(500, "서버 내부 오류", false));
         }
     }
 

@@ -1,8 +1,9 @@
 package com.dadingcoding.web.service;
 
+import com.dadingcoding.web.domain.Member;
 import com.dadingcoding.web.domain.Notice;
-import com.dadingcoding.web.dto.AddNoticeRequest;
-import com.dadingcoding.web.dto.UpdateNoticeRequest;
+import com.dadingcoding.web.controller.dto.AddNoticeRequest;
+import com.dadingcoding.web.controller.dto.UpdateNoticeRequest;
 import com.dadingcoding.web.repository.NoticeRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +14,9 @@ import org.springframework.stereotype.Service;
 public class NoticeService {
     private final NoticeRepository noticeRepository;
 
-    public Notice save(AddNoticeRequest request) {
-        return noticeRepository.save(request.toEntity());
+    public void save(AddNoticeRequest request, Member member) {
+        Notice notice = request.toEntity(member);
+        noticeRepository.save(notice);
     }
 
 //    public void delete(long id) {

@@ -1,4 +1,4 @@
-package com.dadingcoding.web.dto;
+package com.dadingcoding.web.controller.dto;
 
 import com.dadingcoding.web.domain.Member;
 import com.dadingcoding.web.domain.Notice;
@@ -13,13 +13,13 @@ public class AddNoticeRequest {
     private String title;
     private String content;
     private String visibility;
-    private Member member;
 
-    public Notice toEntity() {
+    public Notice toEntity(Member member) {
         return Notice.builder()
                 .title(title)
                 .content(content)
                 .visibility(visibility)
+                .member(member)
                 .build();
     }
 }

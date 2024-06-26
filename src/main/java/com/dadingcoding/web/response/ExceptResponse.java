@@ -7,9 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class Response {
+public class ExceptResponse {
     private final int status;
     private final String message;
+    private final boolean success;
 }
-
-
