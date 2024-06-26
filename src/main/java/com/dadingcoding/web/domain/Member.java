@@ -1,23 +1,51 @@
 package com.dadingcoding.web.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-@Entity
-@Getter @Setter
-public class Member {
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 
-    @Id @GeneratedValue
+@Entity @Data
+@NoArgsConstructor
+public class Member extends BaseEntity{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "member_id")
     private Long id;
 
     private String username;
     private String password;
+    private String email;
 
-    @Enumerated
-    private Role role;
+    private String school;
+    private String age;
+
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
+    @Enumerated(EnumType.STRING)
+    private Role role; //MANAGER, PREMENTOR, MENTOR, MENTEE
+
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    private String refreshToken;
+
+    private LocalDateTime createDate;
+
+    @Builder
+    public Member(String username, String password, String email, Role role, LocalDateTime createDate) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+        this.createDate = createDate;
+    }
 
 }

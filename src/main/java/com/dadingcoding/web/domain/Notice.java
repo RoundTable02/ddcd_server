@@ -18,6 +18,7 @@ public class Notice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)
+
     private Long id;
 
     @Column(name = "title", nullable = false)
