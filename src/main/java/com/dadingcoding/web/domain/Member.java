@@ -11,19 +11,25 @@ import java.util.List;
 
 @Entity @Data
 @NoArgsConstructor
-public class Member {
+public class Member extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column(name = "member_id")
     private Long id;
 
     private String username;
     private String password;
     private String email;
 
+    private String school;
+    private String age;
+
     @Enumerated(EnumType.STRING)
-    private Role role; //ADMIN, MANAGER, USER
+    private Gender gender;
+
+    @Enumerated(EnumType.STRING)
+    private Role role; //MANAGER, PREMENTOR, MENTOR, MENTEE
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
