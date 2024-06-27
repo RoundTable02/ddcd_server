@@ -7,7 +7,7 @@ import java.util.List;
 @Entity
 public class QuestionAnswer extends BaseEntity{
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "question_answer_id")
     private Long id;
 

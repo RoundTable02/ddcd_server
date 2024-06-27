@@ -1,5 +1,7 @@
 package com.dadingcoding.web.service;
 
+import com.dadingcoding.web.controller.dto.MemberSignInDto;
+import com.dadingcoding.web.controller.dto.ValidateEmailResponseDto;
 import com.dadingcoding.web.domain.Member;
 import com.dadingcoding.web.repository.MemberRepository;
 import com.dadingcoding.web.security.JwtToken;
@@ -10,10 +12,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Slf4j
 @Service
@@ -23,10 +28,13 @@ public class MemberLoginService {
     private final MemberRepository memberRepository;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final PasswordEncoder passwordEncoder;
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
 
     @Transactional
-    public JwtToken signIn(String email, String password) {
+    public JwtToken makeToken(String email, String password) {
 
         UsernamePasswordAuthenticationToken authenticationFilter
                 = new UsernamePasswordAuthenticationToken(email, password);
@@ -41,6 +49,7 @@ public class MemberLoginService {
 
         JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
 
+        // 이메일 존재하면 refresh
         Optional<Member> member = memberRepository.findByEmail(email);
         if (member.isPresent()) {
             member.get().setRefreshToken(jwtToken.getRefreshToken());
@@ -64,4 +73,18 @@ public class MemberLoginService {
         return jwtTokenProvider.refreshAccessToken(email);
     }
 
+    public ValidateEmailResponseDto validateEmail(String email) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
+
+        boolean isValid = matcher.matches();
+        boolean isUnique = memberRepository.findByEmail(email).isEmpty();
+
+        return new ValidateEmailResponseDto(isValid, isUnique);
+    }
+
+    public void save(Member member) {
+        String password = member.getPassword();
+        member.setPassword(passwordEncoder.encode(password));
+        memberRepository.save(member);
+    }
 }

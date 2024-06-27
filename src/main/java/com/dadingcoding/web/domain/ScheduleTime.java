@@ -1,9 +1,6 @@
 package com.dadingcoding.web.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalTime;
 
@@ -11,7 +8,7 @@ import java.time.LocalTime;
 public class ScheduleTime {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "schedule_time_id")
     private Long id;
 
