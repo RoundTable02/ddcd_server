@@ -10,6 +10,8 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity @Data
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class Member extends BaseEntity{
 
@@ -23,7 +25,7 @@ public class Member extends BaseEntity{
     private String email;
 
     private String school;
-    private String age;
+    private int age;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
@@ -38,14 +40,5 @@ public class Member extends BaseEntity{
     private String refreshToken;
 
     private LocalDateTime createDate;
-
-    @Builder
-    public Member(String username, String password, String email, Role role, LocalDateTime createDate) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.role = role;
-        this.createDate = createDate;
-    }
 
 }

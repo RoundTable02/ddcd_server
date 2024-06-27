@@ -1,7 +1,6 @@
 package com.dadingcoding.web.controller;
 
-import com.dadingcoding.web.controller.dto.AccessTokenDto;
-import com.dadingcoding.web.controller.dto.MemberSignInDto;
+import com.dadingcoding.web.controller.dto.*;
 import com.dadingcoding.web.security.JwtToken;
 import com.dadingcoding.web.service.MemberLoginService;
 import lombok.RequiredArgsConstructor;
@@ -11,16 +10,27 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/users")
 public class LoginController {
 
     private final MemberLoginService memberLoginService;
 
-    @PostMapping("/sign-in")
-    public JwtToken signIn(@RequestBody MemberSignInDto memberSignInDto) {
-        JwtToken jwtToken = memberLoginService.signIn(memberSignInDto.getEmail(), memberSignInDto.getPassword());
+    // email 검증 -> valid -> 회원가입 정보 받아서 save -> login 해서 Token return
+    @PostMapping("/signup-validate-email")
+    public ValidateEmailResponseDto validateEmail(@RequestBody ValidateEmailRequestDto validateEmailRequestDto) {
+        ValidateEmailResponseDto validateEmailResponseDto = memberLoginService.validateEmail(validateEmailRequestDto.getEmail());
 
-        return jwtToken;
+        return validateEmailResponseDto;
+    }
+
+    @PostMapping("/signup")
+    public void signIn(@RequestBody MemberSignInDto memberSignInDto) {
+        memberLoginService.save(memberSignInDto.toEntity());
+    }
+
+    @PostMapping("/login")
+    public JwtToken login(@RequestBody MemberLoginDto memberLoginDto) {
+        return memberLoginService.makeToken(memberLoginDto.getEmail(), memberLoginDto.getPassword());
     }
 
     @PostMapping("/refresh")
