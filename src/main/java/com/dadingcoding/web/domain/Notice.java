@@ -10,14 +10,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.time.LocalDateTime;
 
-@SpringBootApplication
-@EnableJpaAuditing
-@EntityListeners(AuditingEntityListener.class)
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Notice {
+public class Notice extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,8 +47,4 @@ public class Notice {
         this.content = content;
         this.visibility = visibility;
     }
-
-    @CreatedDate
-    @Column(name = "datePosted")
-    private LocalDateTime datePosted;
 }

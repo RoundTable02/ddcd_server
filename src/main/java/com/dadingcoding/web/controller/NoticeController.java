@@ -15,6 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 // POST형식 "/users/notice_register" request의 header에서 bearer token 정보를 가져와 권한 확인,
 // Notice 저장 후, 각 상황에 맞는 response 반환
 // token을 받아서 어떤식으로 인증할지 결정해야함
@@ -23,10 +26,31 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/notice")
 public class NoticeController {
 
     private final NoticeService noticeService;
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findNotice(@PathVariable long id) {
+        try {
+            Notice notice = noticeService.findById(id);
+
+            // Notice 객체를 JSON 형태로 변환하여 반환
+            Map<String, Object> noticeResponse = new HashMap<>();
+            noticeResponse.put("id", notice.getId());
+            noticeResponse.put("title", notice.getTitle());
+            noticeResponse.put("content", notice.getContent());
+            noticeResponse.put("datePosted", notice.getCreatedAt().toString());
+            noticeResponse.put("visibility", notice.getVisibility());
+
+            // 성공적인 응답 반환
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new Response(200, noticeResponse));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ExceptResponse(500, "서버 내부 오류", false));
+        }
+    }
 
     @PostMapping("/notice_register")
     public ResponseEntity<?> addNotice(@RequestBody AddNoticeRequest request, @AuthenticationPrincipal UserAdaptor userAdaptor) {

@@ -71,16 +71,4 @@ public class AdminService {
     public List<Report> findAllReports() {
         return reportRepository.findAll();
     }
-
-    @Transactional
-    public void addNotice(Notice notice) {
-        noticeRepository.save(notice);
-    }
-
-    @Transactional
-    public void changeNotice(Long noticeId, ChangeNoticeRequest changeNoticeRequest) {
-        Notice notice = noticeRepository.findById(noticeId)
-                .orElseThrow(() -> new NoSuchElementException("공지사항이 존재하지 않습니다."));
-        notice.update(changeNoticeRequest.getTitle(), changeNoticeRequest.getContent());
-    }
 }
