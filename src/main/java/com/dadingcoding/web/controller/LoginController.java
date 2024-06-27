@@ -1,10 +1,13 @@
 package com.dadingcoding.web.controller;
 
 import com.dadingcoding.web.controller.dto.*;
+import com.dadingcoding.web.response.Response;
 import com.dadingcoding.web.security.JwtToken;
 import com.dadingcoding.web.service.MemberLoginService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -24,8 +27,11 @@ public class LoginController {
     }
 
     @PostMapping("/signup")
-    public void signIn(@RequestBody MemberSignInDto memberSignInDto) {
+    public ResponseEntity<Response> signIn(@RequestBody MemberSignInDto memberSignInDto) {
         memberLoginService.save(memberSignInDto.toEntity());
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new Response(200, "회원가입에 성공하였습니다."));
+        // TODO : Response 추가 필요
     }
 
     @PostMapping("/login")

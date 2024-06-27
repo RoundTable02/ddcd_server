@@ -73,6 +73,7 @@ public class MemberLoginService {
         return jwtTokenProvider.refreshAccessToken(email);
     }
 
+    @Transactional
     public ValidateEmailResponseDto validateEmail(String email) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
 
@@ -82,6 +83,7 @@ public class MemberLoginService {
         return new ValidateEmailResponseDto(isValid, isUnique);
     }
 
+    @Transactional
     public void save(Member member) {
         String password = member.getPassword();
         member.setPassword(passwordEncoder.encode(password));
