@@ -10,6 +10,21 @@ import lombok.Setter;
 public class Response {
     private final int status;
     private final String message;
+    private final Object notice;
+
+    public Response(int status, String message) {
+        this.status = status;
+        this.message = message;
+        this.notice = null;
+    }
+
+    public Response(int status, Object notice) {
+        this.status = status;
+        this.message = "";
+        this.notice = notice;
+    }
+
+
 }
 
 

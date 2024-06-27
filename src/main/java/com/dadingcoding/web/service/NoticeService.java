@@ -19,16 +19,20 @@ public class NoticeService {
         noticeRepository.save(notice);
     }
 
-//    public void delete(long id) {
-//        noticeRepository.deleteById(id);
-//    }
-//
+    @Transactional
+    public void delete(long id) {
+        Notice notice = noticeRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("not found: " + id));
+
+        noticeRepository.deleteById(id);
+    }
+
     @Transactional
     public Notice update(long id, UpdateNoticeRequest request) {
         Notice notice = noticeRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found: " + id));
 
-        notice.update(request.getTitle(), request.getContent());
+        notice.update(request.getTitle(), request.getContent(), request.getVisibility());
 
         return notice;
     }
