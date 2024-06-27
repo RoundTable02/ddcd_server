@@ -28,7 +28,7 @@ public class NoticeService {
         Notice notice = noticeRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found: " + id));
 
-        notice.update(request.getTitle(), request.getContent());
+        notice.update(request.getTitle(), request.getContent(), request.getVisibility());
 
         return notice;
     }

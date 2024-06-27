@@ -4,8 +4,10 @@ import com.dadingcoding.web.domain.Member;
 import com.dadingcoding.web.domain.Notice;
 import com.dadingcoding.web.controller.dto.AddNoticeRequest;
 import com.dadingcoding.web.controller.dto.UpdateNoticeRequest;
+import com.dadingcoding.web.domain.Role;
 import com.dadingcoding.web.response.ExceptResponse;
 import com.dadingcoding.web.response.Response;
+import com.dadingcoding.web.security.UserAdaptor;
 import com.dadingcoding.web.service.NoticeService;
 import lombok.*;
 import org.springframework.http.HttpStatus;
@@ -21,26 +23,40 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/admin")
 public class NoticeController {
 
     private final NoticeService noticeService;
 
     @PostMapping("/notice_register")
-    public ResponseEntity<?> addNotice(@RequestBody AddNoticeRequest request, @AuthenticationPrincipal Member member) {
+    public ResponseEntity<?> addNotice(@RequestBody AddNoticeRequest request, @AuthenticationPrincipal UserAdaptor userAdaptor) {
         try {
+            Member member = userAdaptor.getMember();
+
+            if (member.getRole() != Role.MANAGER) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body(new Response(403, "권한이 없는 접근"));
+            }
+
             noticeService.save(request, member);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new Response(201, "공지가 성공적으로 등록되었습니다."));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ExceptResponse(500, "서버 내부 오류", false));
+                    .body(new ExceptResponse(500, "서버 내부 오류: " + e.getMessage(), false));
         }
     }
 
     @PutMapping("/notice-modify/{id}")   //id를 전달받아야 하는데, request에 id가 없다 -> 주소에 담아서 주거나 어떤 형태로든 받아야 함
-    public ResponseEntity<?> updateNotice(@PathVariable long id, @RequestBody UpdateNoticeRequest request, @AuthenticationPrincipal Member member) {
+    public ResponseEntity<?> updateNotice(@PathVariable long id, @RequestBody UpdateNoticeRequest request, @AuthenticationPrincipal UserAdaptor userAdaptor) {
         try {
+            Member member = userAdaptor.getMember();
+
+            if (member.getRole() != Role.MANAGER) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body(new Response(403, "권한이 없는 접근"));
+            }
+
             Notice updatedNotice = noticeService.update(id, request);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new Response(201, "공지가 성공적으로 수정되었습니다."));

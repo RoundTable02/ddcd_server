@@ -41,9 +41,10 @@ public class Notice {
         this.member = member;
     }
 
-    public void update(String title, String content) {
+    public void update(String title, String content, String visibility) {
         this.title = title;
         this.content = content;
+        this.visibility = visibility;
     }
 
     @CreatedDate
