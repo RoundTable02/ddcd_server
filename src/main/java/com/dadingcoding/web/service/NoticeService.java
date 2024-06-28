@@ -9,6 +9,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class NoticeService {
@@ -35,6 +37,10 @@ public class NoticeService {
         notice.update(request.getTitle(), request.getContent(), request.getVisibility());
 
         return notice;
+    }
+
+    public List<Notice> findAll() {
+        return noticeRepository.findAll();
     }
 
     public Notice findById(long id) {
