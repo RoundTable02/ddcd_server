@@ -16,7 +16,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 // POST형식 "/users/notice_register" request의 header에서 bearer token 정보를 가져와 권한 확인,
 // Notice 저장 후, 각 상황에 맞는 response 반환
@@ -26,7 +28,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/notice")
+@RequestMapping("/notices")
 public class NoticeController {
 
     private final NoticeService noticeService;
@@ -47,6 +49,40 @@ public class NoticeController {
             // 성공적인 응답 반환
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new Response(200, noticeResponse));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ExceptResponse(500, "서버 내부 오류", false));
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<?> findNotices() {
+        try {
+            List<Notice> notices = noticeService.findAll();
+
+            // 공지사항 목록을 JSON 형태로 변환하여 반환
+            List<Map<String, Object>> noticeResponses = notices.stream().map(notice -> {
+                Map<String, Object> noticeResponse = new HashMap<>();
+                noticeResponse.put("notice_id", notice.getId());
+                noticeResponse.put("title", notice.getTitle());
+                noticeResponse.put("content", notice.getContent());
+                noticeResponse.put("created_at", notice.getCreatedAt().toString());
+                noticeResponse.put("updated_at", notice.getModifiedAt().toString());
+
+                // 작성자 정보 포함
+                Map<String, Object> authorResponse = new HashMap<>();
+                authorResponse.put("user_id", notice.getMember().getId());
+                authorResponse.put("username", notice.getMember().getUsername());
+                noticeResponse.put("author", authorResponse);
+
+                // 가시성 정보 포함
+                noticeResponse.put("visibility", notice.getVisibility());
+
+                return noticeResponse;
+            }).collect(Collectors.toList());
+
+            // 성공적인 응답 반환
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new Response(200, noticeResponses));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ExceptResponse(500, "서버 내부 오류", false));
         }
@@ -91,7 +127,7 @@ public class NoticeController {
     }
 
     @DeleteMapping("/notice-delete/{id}")   //id를 전달받아야 하는데, request에 id가 없다 -> 주소에 담아서 주거나 어떤 형태로든 받아야 함
-    public ResponseEntity<?> updateNotice(@PathVariable long id, @AuthenticationPrincipal UserAdaptor userAdaptor) {
+    public ResponseEntity<?> deleteNotice(@PathVariable long id, @AuthenticationPrincipal UserAdaptor userAdaptor) {
         try {
             Member member = userAdaptor.getMember();
 
