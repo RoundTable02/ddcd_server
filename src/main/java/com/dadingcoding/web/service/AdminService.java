@@ -1,7 +1,6 @@
 package com.dadingcoding.web.service;
 
-import com.dadingcoding.web.controller.dto.AdminScheduleRequestDto;
-import com.dadingcoding.web.controller.dto.ChangeNoticeRequest;
+import com.dadingcoding.web.controller.dto.request.AdminScheduleRequestDto;
 import com.dadingcoding.web.domain.*;
 import com.dadingcoding.web.repository.*;
 import lombok.RequiredArgsConstructor;

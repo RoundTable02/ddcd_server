@@ -1,6 +1,11 @@
 package com.dadingcoding.web.controller;
 
-import com.dadingcoding.web.controller.dto.*;
+import com.dadingcoding.web.controller.dto.request.MemberLoginDto;
+import com.dadingcoding.web.controller.dto.request.MemberSignInDto;
+import com.dadingcoding.web.controller.dto.request.ValidateEmailRequestDto;
+import com.dadingcoding.web.controller.dto.response.AccessTokenDto;
+import com.dadingcoding.web.controller.dto.response.LoginResponseDto;
+import com.dadingcoding.web.controller.dto.response.ValidateEmailResponseDto;
 import com.dadingcoding.web.response.Response;
 import com.dadingcoding.web.security.JwtToken;
 import com.dadingcoding.web.service.MemberLoginService;
@@ -35,7 +40,7 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public JwtToken login(@RequestBody MemberLoginDto memberLoginDto) {
+    public LoginResponseDto login(@RequestBody MemberLoginDto memberLoginDto) {
         return memberLoginService.makeToken(memberLoginDto.getEmail(), memberLoginDto.getPassword());
     }
 

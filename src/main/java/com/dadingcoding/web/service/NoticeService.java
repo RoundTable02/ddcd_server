@@ -2,8 +2,8 @@ package com.dadingcoding.web.service;
 
 import com.dadingcoding.web.domain.Member;
 import com.dadingcoding.web.domain.Notice;
-import com.dadingcoding.web.controller.dto.AddNoticeRequest;
-import com.dadingcoding.web.controller.dto.UpdateNoticeRequest;
+import com.dadingcoding.web.controller.dto.request.AddNoticeRequest;
+import com.dadingcoding.web.controller.dto.request.UpdateNoticeRequest;
 import com.dadingcoding.web.repository.NoticeRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

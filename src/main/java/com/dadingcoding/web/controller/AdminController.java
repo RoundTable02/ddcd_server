@@ -1,8 +1,8 @@
 package com.dadingcoding.web.controller;
 
-import com.dadingcoding.web.controller.dto.AdminScheduleRequestDto;
-import com.dadingcoding.web.controller.dto.ListResponseDto;
-import com.dadingcoding.web.controller.dto.TutorRoleRequestDto;
+import com.dadingcoding.web.controller.dto.request.AdminScheduleRequestDto;
+import com.dadingcoding.web.controller.dto.response.ListResponseDto;
+import com.dadingcoding.web.controller.dto.request.TutorRoleRequestDto;
 import com.dadingcoding.web.domain.Member;
 import com.dadingcoding.web.domain.Report;
 import com.dadingcoding.web.security.UserAdaptor;
