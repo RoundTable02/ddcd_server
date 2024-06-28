@@ -52,6 +52,10 @@ public class Notice {
     }
 
     @CreatedDate
-    @Column(name = "datePosted")
-    private LocalDateTime datePosted;
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 }
