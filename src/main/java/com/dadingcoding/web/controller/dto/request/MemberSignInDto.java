@@ -1,4 +1,4 @@
-package com.dadingcoding.web.controller.dto;
+package com.dadingcoding.web.controller.dto.request;
 
 import com.dadingcoding.web.domain.Gender;
 import com.dadingcoding.web.domain.Member;

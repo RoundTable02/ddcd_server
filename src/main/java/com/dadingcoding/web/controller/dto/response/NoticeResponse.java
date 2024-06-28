@@ -1,4 +1,4 @@
-package com.dadingcoding.web.controller.dto;
+package com.dadingcoding.web.controller.dto.response;
 
 import com.dadingcoding.web.domain.Notice;
 import lombok.Getter;
