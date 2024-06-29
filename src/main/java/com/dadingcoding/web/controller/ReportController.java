@@ -4,6 +4,7 @@ import com.dadingcoding.web.controller.dto.request.ReportRequestDto;
 import com.dadingcoding.web.controller.dto.response.ReportResponseDto;
 import com.dadingcoding.web.domain.Report;
 import com.dadingcoding.web.repository.ReportRepository;
+import com.dadingcoding.web.response.ExceptResponse;
 import com.dadingcoding.web.security.UserAdaptor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

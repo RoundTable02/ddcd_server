@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity @Builder
 @AllArgsConstructor @NoArgsConstructor
-public class Schedule extends BaseEntity{
+public class Schedule extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,8 +34,5 @@ public class Schedule extends BaseEntity{
     private ScheduleType scheduleType;
 
     private String title;
-
     private String content;
-
-
 }
