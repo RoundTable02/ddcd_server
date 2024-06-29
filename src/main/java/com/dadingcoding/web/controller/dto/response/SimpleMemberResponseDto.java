@@ -1,26 +1,27 @@
-package com.dadingcoding.web.controller.dto;
+package com.dadingcoding.web.controller.dto.response;
 
 import com.dadingcoding.web.domain.Member;
-import com.dadingcoding.web.domain.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
 @Builder
+@Data
 @AllArgsConstructor
 public class SimpleMemberResponseDto {
-    private Long user_id;
+    private Long userId;
     private String username;
     private String email;
-    private Role role;
+    private String phone;
+    private String role;
 
     public static SimpleMemberResponseDto toDto(Member member) {
         return SimpleMemberResponseDto.builder()
-                .user_id(member.getId())
+                .userId(member.getId())
                 .username(member.getUsername())
                 .email(member.getEmail())
-                .role(member.getRole())
+                .phone(member.getPhone())
+                .role(member.getRole().toString())
                 .build();
     }
 }

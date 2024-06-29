@@ -1,4 +1,4 @@
-package com.dadingcoding.web.controller.dto;
+package com.dadingcoding.web.controller.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

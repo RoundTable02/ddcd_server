@@ -1,12 +1,16 @@
 package com.dadingcoding.web.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+@Entity @Builder
+@AllArgsConstructor @NoArgsConstructor
 public class Schedule extends BaseEntity{
 
     @Id

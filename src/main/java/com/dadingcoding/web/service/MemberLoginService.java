@@ -1,8 +1,8 @@
 package com.dadingcoding.web.service;
 
-import com.dadingcoding.web.controller.dto.MemberLoginResponseDto;
-import com.dadingcoding.web.controller.dto.SimpleMemberResponseDto;
-import com.dadingcoding.web.controller.dto.ValidateEmailResponseDto;
+import com.dadingcoding.web.controller.dto.response.MemberLoginResponseDto;
+import com.dadingcoding.web.controller.dto.response.SimpleMemberResponseDto;
+import com.dadingcoding.web.controller.dto.response.ValidateEmailResponseDto;
 import com.dadingcoding.web.domain.Member;
 import com.dadingcoding.web.repository.MemberRepository;
 import com.dadingcoding.web.security.JwtToken;
@@ -82,6 +82,7 @@ public class MemberLoginService {
         return jwtTokenProvider.refreshAccessToken(email);
     }
 
+    @Transactional
     public ValidateEmailResponseDto validateEmail(String email) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
 
@@ -91,6 +92,7 @@ public class MemberLoginService {
         return new ValidateEmailResponseDto(isValid, isUnique);
     }
 
+    @Transactional
     public void save(Member member) {
         String password = member.getPassword();
         member.setPassword(passwordEncoder.encode(password));

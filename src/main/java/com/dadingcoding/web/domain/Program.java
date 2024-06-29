@@ -1,10 +1,16 @@
 package com.dadingcoding.web.domain;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-@Entity
+@Entity @Builder
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Program extends BaseEntity{
 
     @Id
@@ -12,20 +18,18 @@ public class Program extends BaseEntity{
     @Column(name = "program_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
-
     private String title;
+    private String description;
+    private String programPic;
 
-    private String content;
+    @Setter
+    @OneToMany(mappedBy = "program", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProgramMember> programMembers = new ArrayList<>();
 
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
-    private int view = 0;
+    private ProgramStatus status;
 
-    private String photo;
-
-
+    private String details;
 }
