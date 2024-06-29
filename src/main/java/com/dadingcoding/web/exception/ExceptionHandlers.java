@@ -65,8 +65,8 @@ public class ExceptionHandlers  {
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ExceptResponse> badCredentialsException(BadCredentialsException e) {
         log.error("ERROR", e);
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(new ExceptResponse(401, BAD_CREDENTIALS.getMessage(), false));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ExceptResponse(400, WRONG_ID_PASSWORD.getMessage(), false));
     }
 
     // DEFAULT Exception

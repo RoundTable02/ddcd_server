@@ -1,6 +1,7 @@
 package com.dadingcoding.web.service;
 
-import com.dadingcoding.web.controller.dto.MemberSignInDto;
+import com.dadingcoding.web.controller.dto.MemberLoginResponseDto;
+import com.dadingcoding.web.controller.dto.SimpleMemberResponseDto;
 import com.dadingcoding.web.controller.dto.ValidateEmailResponseDto;
 import com.dadingcoding.web.domain.Member;
 import com.dadingcoding.web.repository.MemberRepository;
@@ -34,7 +35,7 @@ public class MemberLoginService {
 
 
     @Transactional
-    public JwtToken makeToken(String email, String password) {
+    public MemberLoginResponseDto makeToken(String email, String password) {
 
         UsernamePasswordAuthenticationToken authenticationFilter
                 = new UsernamePasswordAuthenticationToken(email, password);
@@ -50,13 +51,20 @@ public class MemberLoginService {
 
         JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
 
+        SimpleMemberResponseDto simpleMemberResponseDto = null;
+
         // 이메일 존재하면 refresh
         Optional<Member> member = memberRepository.findByEmail(email);
         if (member.isPresent()) {
-            member.get().setRefreshToken(jwtToken.getRefreshToken());
+            Member findMember = member.get();
+            findMember.setRefreshToken(jwtToken.getRefreshToken());
+            simpleMemberResponseDto = SimpleMemberResponseDto.toDto(findMember);
         }
 
-        return jwtToken;
+        return MemberLoginResponseDto.builder()
+                .token(jwtToken.getAccessToken())
+                .user(simpleMemberResponseDto)
+                .build();
     }
 
     // username, refreshToken으로 검증 -> accessToken 토큰 생성

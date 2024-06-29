@@ -12,6 +12,7 @@ public enum ErrorCode {
     WRONG_TOKEN_TYPE("올바르지 않은 토큰입니다."),
     EXPIRED_TOKEN("토큰이 만료되었습니다. 다시 로그인하세요."),
     BAD_CREDENTIALS("회원정보가 없습니다."),
+    WRONG_ID_PASSWORD("잘못된 이메일 또는 패스워드입니다."),
 
     //403 Forbidden
     NO_ATHORITY_TO_ACCESS("데이터에 접근 권한이 없습니다."),

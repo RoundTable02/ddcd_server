@@ -36,12 +36,14 @@ public class LoginController {
     }
 
     @PostMapping("/signup")
-    public void signIn(@RequestBody MemberSignInDto memberSignInDto) {
+    public ResponseEntity<Response> signIn(@RequestBody MemberSignInDto memberSignInDto) {
         memberLoginService.save(memberSignInDto.toEntity());
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new Response(200, "회원가입이 완료되었습니다."));
     }
 
     @PostMapping("/login")
-    public JwtToken login(@RequestBody MemberLoginDto memberLoginDto) {
+    public MemberLoginResponseDto login(@RequestBody MemberLoginDto memberLoginDto) {
         return memberLoginService.makeToken(memberLoginDto.getEmail(), memberLoginDto.getPassword());
     }
 
