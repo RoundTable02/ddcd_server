@@ -45,6 +45,7 @@ public class MemberLoginService {
             authentication = authenticationManagerBuilder.getObject().authenticate(authenticationFilter);
         } catch (Exception e) {
             e.printStackTrace();
+            throw e;
         }
 
         JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
