@@ -84,7 +84,7 @@ public class AdminService {
         Member tutor = memberRepository.findById(tutorId)
                 .orElseThrow(() -> new NoSuchElementException("해당 유저가 존재하지 않습니다."));
 
-        LocalDateTime time = LocalDateTime.parse(adminScheduleRequestDto.getSchedule());
+        LocalDateTime time = adminScheduleRequestDto.getSchedule().getStart_time();
         ScheduleTime scheduleTime = scheduleTimeRepository.findByAvailableDateTime(time)
                 .orElseThrow(() -> new NoSuchElementException("스케줄이 존재하지 않습니다."));
 
@@ -92,8 +92,8 @@ public class AdminService {
                 .mentor(member)
                 .mentee(tutor)
                 .scheduleTimeList(List.of(scheduleTime))
-                .title(adminScheduleRequestDto.getTitle())
-                .content(adminScheduleRequestDto.getContent())
+                .title(adminScheduleRequestDto.getSchedule().getContent())
+                .content(adminScheduleRequestDto.getSchedule().getContent())
                 .scheduleType(ScheduleType.valueOf(adminScheduleRequestDto.getSchedule_type()))
                 .build();
 

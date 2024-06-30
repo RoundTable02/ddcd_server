@@ -33,9 +33,6 @@ public class AdminController {
         return adminService.findTutorById(tutorId);
     }
 
-    @PostMapping("/tutors/{tutorId}/schedule")
-    
-
     @GetMapping("/students")
     public ListResponseDto<SimpleStudentResponseDto> findAllStudents() {
         List<SimpleStudentResponseDto> students = adminService.findAllStudents();
