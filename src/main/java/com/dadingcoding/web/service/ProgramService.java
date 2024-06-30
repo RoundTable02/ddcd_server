@@ -2,6 +2,7 @@ package com.dadingcoding.web.service;
 
 import com.dadingcoding.web.controller.dto.request.AddProgramRequestDto;
 import com.dadingcoding.web.controller.dto.request.EditProgramRequestDto;
+import com.dadingcoding.web.controller.dto.response.ProgramResponseDto;
 import com.dadingcoding.web.domain.Member;
 import com.dadingcoding.web.domain.Program;
 import com.dadingcoding.web.domain.ProgramMember;
@@ -27,6 +28,20 @@ public class ProgramService {
     private final ProgramRepository programRepository;
     private final ProgramMemberRepository programMemberRepository;
 
+    public List<ProgramResponseDto> getPrograms() {
+        List<Program> programList = programRepository.findAll();
+        return programList.stream()
+                .map(p -> ProgramResponseDto.toDto(p))
+                .collect(Collectors.toList());
+    }
+
+    public ProgramResponseDto getProgram(Long programId) {
+        Program program = programRepository.findById(programId)
+                .orElseThrow(() -> new NoSuchElementException("찾는 프로그램이 없습니다."));
+
+        return ProgramResponseDto.toDto(program);
+    }
+
     @Transactional
     public void addProgram(AddProgramRequestDto requestDto) {
         Program program = requestDto.toEntity();
@@ -47,6 +62,7 @@ public class ProgramService {
         }
     }
 
+    @Transactional
     public void editProgram(Long programId, EditProgramRequestDto requestDto) {
         Program program = programRepository.findById(programId)
                 .orElseThrow(() -> new NoSuchElementException("프로그램이 존재하지 않습니다."));
@@ -82,7 +98,10 @@ public class ProgramService {
 
     }
 
+    @Transactional
     public void deleteProgram(Long programId) {
         programRepository.deleteById(programId);
     }
+
+
 }

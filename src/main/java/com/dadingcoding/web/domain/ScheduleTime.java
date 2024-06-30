@@ -1,10 +1,12 @@
 package com.dadingcoding.web.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-@Entity
+@Entity @Getter
 public class ScheduleTime {
 
     @Id
@@ -12,5 +14,5 @@ public class ScheduleTime {
     @Column(name = "schedule_time_id")
     private Long id;
 
-    private LocalTime availableTime;
+    private LocalDateTime availableDateTime;
 }

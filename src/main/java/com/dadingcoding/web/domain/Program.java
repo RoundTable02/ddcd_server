@@ -23,7 +23,7 @@ public class Program extends BaseEntity{
     private String programPic;
 
     @Setter
-    @OneToMany(mappedBy = "program", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "program", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProgramMember> programMembers = new ArrayList<>();
 
     private LocalDateTime startDate;
