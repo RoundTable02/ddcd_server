@@ -1,6 +1,7 @@
 package com.dadingcoding.web.controller;
 
 import com.dadingcoding.web.controller.dto.request.ReportRequestDto;
+import com.dadingcoding.web.controller.dto.response.ExceptResponse;
 import com.dadingcoding.web.controller.dto.response.ReportResponseDto;
 import com.dadingcoding.web.domain.Report;
 import com.dadingcoding.web.repository.ReportRepository;

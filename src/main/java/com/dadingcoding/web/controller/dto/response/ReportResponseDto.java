@@ -19,7 +19,7 @@ public class ReportResponseDto {
                 report.getId(),
                 report.getTitle(),
                 report.getContent(),
-                report.getCreateDate()
+                report.getCreatedAt()
         );
     }
 }

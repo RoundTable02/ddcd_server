@@ -1,10 +1,11 @@
 package com.dadingcoding.web.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.util.List;
 
-@Entity
+@Entity @Getter
 public class QuestionAnswer extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +24,7 @@ public class QuestionAnswer extends BaseEntity{
     @JoinColumn(name = "question_id")
     private QuestionAnswer question;
 
-    @OneToMany(mappedBy = "question", orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "question", orphanRemoval = true)
     private List<QuestionAnswer> answers;
 
     @Enumerated(EnumType.STRING)

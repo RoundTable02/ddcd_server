@@ -6,7 +6,7 @@ spring:
     driver-class-name: org.h2.Driver
   jpa:
     hibernate:
-      ddl-auto: create
+#      ddl-auto: create
     properties:
       hibernate:
         #        show_sql: true
@@ -18,3 +18,7 @@ spring:
 jwt:
   secret: b7e29d7bc4c8704077549d755d01139de165e4bde39bbb16275c773250823125
 #  공개 금지 (공개시 ignore에 추가 필요)
+
+logging:
+  level:
+    root: INFO

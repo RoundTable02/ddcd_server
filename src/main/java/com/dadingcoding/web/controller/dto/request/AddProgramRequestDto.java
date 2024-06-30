@@ -26,10 +26,10 @@ public class AddProgramRequestDto {
 
     private String title;
     private String description;
-    private String programPic;
+    private String program_pic;
     private List<Long> tutors;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDateTime start_date;
+    private LocalDateTime end_date;
     private ProgramStatus status;
     private String details;
 
@@ -37,9 +37,9 @@ public class AddProgramRequestDto {
         return Program.builder()
                 .title(title)
                 .description(description)
-                .programPic(programPic)
-                .startDate(startDate)
-                .endDate(endDate)
+                .programPic(program_pic)
+                .startDate(start_date)
+                .endDate(end_date)
                 .status(status)
                 .details(details)
                 .build();

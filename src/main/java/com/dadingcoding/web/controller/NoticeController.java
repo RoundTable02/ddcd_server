@@ -84,11 +84,12 @@ public class NoticeController {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new Response(200, noticeResponses));
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ExceptResponse(500, "서버 내부 오류", false));
         }
     }
 
-    @PostMapping("/notice_register")
+    @PostMapping
     public ResponseEntity<?> addNotice(@RequestBody AddNoticeRequest request, @AuthenticationPrincipal UserAdaptor userAdaptor) {
         try {
             Member member = userAdaptor.getMember();
@@ -107,7 +108,7 @@ public class NoticeController {
         }
     }
 
-    @PutMapping("/notice-modify/{id}")   //id를 전달받아야 하는데, request에 id가 없다 -> 주소에 담아서 주거나 어떤 형태로든 받아야 함
+    @PutMapping("/{id}")   //id를 전달받아야 하는데, request에 id가 없다 -> 주소에 담아서 주거나 어떤 형태로든 받아야 함
     public ResponseEntity<?> updateNotice(@PathVariable long id, @RequestBody UpdateNoticeRequest request, @AuthenticationPrincipal UserAdaptor userAdaptor) {
         try {
             Member member = userAdaptor.getMember();
@@ -126,7 +127,7 @@ public class NoticeController {
         }
     }
 
-    @DeleteMapping("/notice-delete/{id}")   //id를 전달받아야 하는데, request에 id가 없다 -> 주소에 담아서 주거나 어떤 형태로든 받아야 함
+    @DeleteMapping("/{id}")   //id를 전달받아야 하는데, request에 id가 없다 -> 주소에 담아서 주거나 어떤 형태로든 받아야 함
     public ResponseEntity<?> deleteNotice(@PathVariable long id, @AuthenticationPrincipal UserAdaptor userAdaptor) {
         try {
             Member member = userAdaptor.getMember();

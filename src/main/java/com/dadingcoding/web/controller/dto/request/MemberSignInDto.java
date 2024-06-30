@@ -12,6 +12,7 @@ public class MemberSignInDto {
     private String password;
     private String name;
     private String school;
+    private String phone;
     private int age;
     private Gender gender;
     private Role status;
@@ -22,6 +23,7 @@ public class MemberSignInDto {
                 .password(password)
                 .username(name)
                 .school(school)
+                .phone(phone)
                 .age(age)
                 .gender(gender)
                 .role(status)
