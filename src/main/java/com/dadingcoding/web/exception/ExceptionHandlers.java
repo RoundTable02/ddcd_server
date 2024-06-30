@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.NoSuchElementException;
+
 import static com.dadingcoding.web.exception.ErrorCode.*;
 
 @RestControllerAdvice
@@ -23,6 +25,13 @@ public class ExceptionHandlers  {
         log.error("ERROR", e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ExceptResponse(400, e.getErrorCode().getMessage(), false));
+    }
+
+    @ExceptionHandler({NoSuchElementException.class})
+    public ResponseEntity<ExceptResponse> handleNoSuchElementException(NoSuchElementException e){
+        log.error("ERROR", e);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ExceptResponse(400, e.getMessage(), false));
     }
 
     @ExceptionHandler({NoAuthorityToAccessException.class})

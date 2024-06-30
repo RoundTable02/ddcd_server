@@ -16,6 +16,7 @@ public class ProgramResponseDto {
     private Long program_id;
     private String title;
     private String description;
+    private String details;
     private String program_pic;
     private List<SimpleTutorDto> tutors;
     private LocalDateTime start_date;
@@ -33,6 +34,7 @@ public class ProgramResponseDto {
                 .title(program.getTitle())
                 .description(program.getDescription())
                 .program_pic(program.getProgramPic())
+                .details(program.getDetails())
                 .tutors(tutorDtoList)
                 .start_date(program.getStartDate())
                 .end_date(program.getEndDate())

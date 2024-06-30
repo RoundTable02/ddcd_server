@@ -66,6 +66,8 @@ public class ProgramService {
     public void editProgram(Long programId, EditProgramRequestDto requestDto) {
         Program program = programRepository.findById(programId)
                 .orElseThrow(() -> new NoSuchElementException("프로그램이 존재하지 않습니다."));
+        program.update(requestDto.getTitle(), requestDto.getDescription(), requestDto.getProgram_pic(), requestDto.getStart_date(),
+                requestDto.getEnd_date(), requestDto.getStatus(), requestDto.getDetails());
 
         List<Long> afterMemberIds = requestDto.getTutors();
         Collections.sort(afterMemberIds);
@@ -76,8 +78,11 @@ public class ProgramService {
 
         // Member 변경 발생
         if (!orgMemberIds.equals(afterMemberIds)) {
+            List<Long> programMemberIds = program.getProgramMembers().stream()
+                    .map(pm -> pm.getId())
+                    .collect(Collectors.toList());
             // 모든 멤버 삭제 후 저장
-            programMemberRepository.deleteAllById(orgMemberIds);
+            programMemberRepository.deleteAllByIds(programMemberIds);
 
             for (Long tutorId : afterMemberIds) {
                 Member mentor = memberRepository.findById(tutorId)

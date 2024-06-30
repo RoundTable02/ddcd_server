@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -51,7 +51,12 @@ public class AdminService {
         List<Schedule> classSchedules = scheduleRepository.findAllByMentorIdAndScheduleType(member.getId(), ScheduleType.CLASS);
         List<Schedule> interviewSchedules = scheduleRepository.findAllByMenteeIdAndScheduleType(member.getId(), ScheduleType.INTERVIEW);
 
-        Application application = findApplicationByMemberId(member.getId());
+        Application application = null;
+        try {
+            application = findApplicationByMemberId(member.getId());
+        } catch (NoSuchElementException e) {
+            log.info("유저의 지원서가 존재하지 않습니다.");
+        }
 
         dto.setClass_schedule(classSchedules);
         dto.setInterview_schedule(interviewSchedules);
@@ -79,8 +84,8 @@ public class AdminService {
         Member tutor = memberRepository.findById(tutorId)
                 .orElseThrow(() -> new NoSuchElementException("해당 유저가 존재하지 않습니다."));
 
-        LocalTime time = LocalTime.parse(adminScheduleRequestDto.getSchedule());
-        ScheduleTime scheduleTime = scheduleTimeRepository.findByAvailableTime(time)
+        LocalDateTime time = LocalDateTime.parse(adminScheduleRequestDto.getSchedule());
+        ScheduleTime scheduleTime = scheduleTimeRepository.findByAvailableDateTime(time)
                 .orElseThrow(() -> new NoSuchElementException("스케줄이 존재하지 않습니다."));
 
         Schedule schedule = Schedule.builder()
@@ -89,7 +94,7 @@ public class AdminService {
                 .scheduleTimeList(List.of(scheduleTime))
                 .title(adminScheduleRequestDto.getTitle())
                 .content(adminScheduleRequestDto.getContent())
-                .scheduleType(ScheduleType.valueOf(adminScheduleRequestDto.getScheduleType()))
+                .scheduleType(ScheduleType.valueOf(adminScheduleRequestDto.getSchedule_type()))
                 .build();
 
         scheduleRepository.save(schedule);
@@ -107,8 +112,14 @@ public class AdminService {
 
         StudentResponseDto dto = StudentResponseDto.toDto(student);
 
-        Application application = findApplicationByMemberId(studentId);
-        dto.setApplication(application.getContent());
+        Application application = null;
+        try {
+            application = findApplicationByMemberId(studentId);
+        } catch (NoSuchElementException e) {
+            log.info("유저의 지원서가 존재하지 않습니다.");
+        }
+        if (application != null)
+            dto.setApplication(application.getContent());
 
         List<QuestionAnswer> questions = questionAnswerRepository.findAllByMemberIdAndQnaType(studentId, QnaType.QUESTION);
         List<SimpleQuestionDto> questionDtos = questions.stream()

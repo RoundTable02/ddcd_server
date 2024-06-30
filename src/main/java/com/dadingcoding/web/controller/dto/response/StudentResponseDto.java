@@ -29,6 +29,7 @@ public class StudentResponseDto {
     private Long studentId;
     private String name;
     private String phone;
+    private String email;
 
     @Setter
     private String application;
@@ -40,6 +41,7 @@ public class StudentResponseDto {
         return StudentResponseDto.builder()
                 .studentId(member.getId())
                 .name(member.getUsername())
+                .email(member.getEmail())
                 .phone(member.getPhone())
                 .build();
     }

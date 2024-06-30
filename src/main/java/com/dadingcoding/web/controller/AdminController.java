@@ -33,6 +33,9 @@ public class AdminController {
         return adminService.findTutorById(tutorId);
     }
 
+    @PostMapping("/tutors/{tutorId}/schedule")
+    
+
     @GetMapping("/students")
     public ListResponseDto<SimpleStudentResponseDto> findAllStudents() {
         List<SimpleStudentResponseDto> students = adminService.findAllStudents();
@@ -44,7 +47,7 @@ public class AdminController {
         return adminService.findStudentById(studentId);
     }
 
-    @PutMapping("/tutors/{tutorId}")
+    @PutMapping("/tutors/{tutorId}/role")
     public ResponseEntity<Response> changeTutorRole(@PathVariable Long tutorId, @RequestBody TutorRoleRequestDto tutorRoleRequestDto) {
         adminService.changeTutorRole(tutorId, tutorRoleRequestDto.getRole());
         return ResponseEntity.status(HttpStatus.OK)
