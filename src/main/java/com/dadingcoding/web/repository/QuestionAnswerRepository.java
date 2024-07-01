@@ -12,5 +12,5 @@ import java.util.Optional;
 
 @Repository
 public interface QuestionAnswerRepository extends JpaRepository<QuestionAnswer, Long> {
-    List<QuestionAnswer> findAllByMemberIdAndQnaType(Long studentId, QnaType qnaType);
+    List<QuestionAnswer> findAllByMemberIdAndQnaType(Long menteeId, QnaType qnaType);
 }

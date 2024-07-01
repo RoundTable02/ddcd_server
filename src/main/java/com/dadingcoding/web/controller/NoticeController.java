@@ -9,7 +9,6 @@ import com.dadingcoding.web.domain.Role;
 import com.dadingcoding.web.response.Response;
 import com.dadingcoding.web.security.UserAdaptor;
 import com.dadingcoding.web.service.NoticeService;
-import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
 @RestController
 @RequestMapping("/notices")
 public class NoticeController {
@@ -31,7 +29,6 @@ public class NoticeController {
     public ResponseEntity<?> findNotice(@PathVariable long notice_id) {
         Notice notice = noticeService.findById(notice_id);
 
-        // Notice 객체를 JSON 형태로 변환하여 반환
         Map<String, Object> noticeResponse = new HashMap<>();
         noticeResponse.put("id", notice.getId());
         noticeResponse.put("title", notice.getTitle());
@@ -39,7 +36,6 @@ public class NoticeController {
         noticeResponse.put("datePosted", notice.getCreatedAt().toString());
         noticeResponse.put("visibility", notice.getVisibility());
 
-        // 성공적인 응답 반환
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new NoticeResponse(200, noticeResponse));
     }
@@ -48,7 +44,6 @@ public class NoticeController {
     public ResponseEntity<?> findNotices() {
         List<Notice> notices = noticeService.findAll();
 
-        // 공지사항 목록을 JSON 형태로 변환하여 반환
         List<Map<String, Object>> noticeResponses = notices.stream().map(notice -> {
             Map<String, Object> noticeResponse = new HashMap<>();
             noticeResponse.put("notice_id", notice.getId());
@@ -57,19 +52,16 @@ public class NoticeController {
             noticeResponse.put("created_at", notice.getCreatedAt().toString());
             noticeResponse.put("updated_at", notice.getUpdatedAt().toString());
 
-            // 작성자 정보 포함
             Map<String, Object> authorResponse = new HashMap<>();
             authorResponse.put("user_id", notice.getMember().getId());
             authorResponse.put("username", notice.getMember().getUsername());
             noticeResponse.put("author", authorResponse);
 
-            // 가시성 정보 포함
             noticeResponse.put("visibility", notice.getVisibility());
 
             return noticeResponse;
         }).collect(Collectors.toList());
 
-        // 성공적인 응답 반환
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new NoticeResponse(200, noticeResponses));
     }

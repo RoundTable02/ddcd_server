@@ -101,28 +101,28 @@ public class AdminService {
         scheduleRepository.save(schedule);
     }
 
-    public List<SimpleStudentResponseDto> findAllStudents() {
+    public List<SimpleMenteeResponseDto> findAllMentees() {
         return memberRepository.findAllByRole(Role.MENTEE).stream()
-                .map(SimpleStudentResponseDto::toDto)
+                .map(SimpleMenteeResponseDto::toDto)
                 .collect(Collectors.toList());
     }
 
-    public StudentResponseDto findStudentById(Long studentId) {
-        Member student = memberRepository.findById(studentId)
+    public MenteeResponseDto findMenteeById(Long menteeId) {
+        Member mentee = memberRepository.findById(menteeId)
                 .orElseThrow(() -> new NoSuchElementException("해당 학생이 존재하지 않습니다."));
 
-        StudentResponseDto dto = StudentResponseDto.toDto(student);
+        MenteeResponseDto dto = MenteeResponseDto.toDto(mentee);
 
         Application application = null;
         try {
-            application = findApplicationByMemberId(studentId);
+            application = findApplicationByMemberId(menteeId);
         } catch (NoSuchElementException e) {
             log.info("유저의 지원서가 존재하지 않습니다.");
         }
         if (application != null)
             dto.setApplication(application.getContent());
 
-        List<QuestionAnswer> questions = questionAnswerRepository.findAllByMemberIdAndQnaType(studentId, QnaType.QUESTION);
+        List<QuestionAnswer> questions = questionAnswerRepository.findAllByMemberIdAndQnaType(menteeId, QnaType.QUESTION);
         List<SimpleQuestionDto> questionDtos = questions.stream()
                 .map(SimpleQuestionDto::toDto)
                 .collect(Collectors.toList());
