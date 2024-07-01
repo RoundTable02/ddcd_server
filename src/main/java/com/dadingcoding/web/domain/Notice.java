@@ -3,21 +3,15 @@ package com.dadingcoding.web.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-
-import java.time.LocalDateTime;
 
 @SpringBootApplication
-@EnableJpaAuditing
 @EntityListeners(AuditingEntityListener.class)
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Notice extends BaseEntity {
+public class Notice extends PostEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -92,10 +92,11 @@ public class AdminService {
                 .mentor(member)
                 .mentee(tutor)
                 .scheduleTimeList(List.of(scheduleTime))
-                .title(adminScheduleRequestDto.getSchedule().getContent())
-                .content(adminScheduleRequestDto.getSchedule().getContent())
                 .scheduleType(ScheduleType.valueOf(adminScheduleRequestDto.getSchedule_type()))
                 .build();
+
+        schedule.setTitle(adminScheduleRequestDto.getSchedule().getContent());
+        schedule.setContent(adminScheduleRequestDto.getSchedule().getContent());
 
         scheduleRepository.save(schedule);
     }

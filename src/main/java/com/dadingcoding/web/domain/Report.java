@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.Setter;
 
 @Entity @Data
-public class Report extends BaseEntity{
+public class Report extends PostEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "report_id")
@@ -19,8 +19,4 @@ public class Report extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "schedule_id")
     private Schedule schedule;
-
-    private String title;
-
-    private String content;
 }
