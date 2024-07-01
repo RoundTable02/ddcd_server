@@ -1,17 +1,22 @@
 package com.dadingcoding.web.controller.dto.response;
 
-import com.dadingcoding.web.domain.Notice;
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
+@Data
 public class NoticeResponse {
-    private final String title;
-    private final String content;
-    private final String visibility;
+    private final int status;
+    private final String message;
+    private final Object notice;
 
-    public NoticeResponse(Notice notice) {
-        this.title = notice.getTitle();
-        this.content = notice.getContent();
-        this.visibility = notice.getVisibility();
+    public NoticeResponse(int status, String message) {
+        this.status = status;
+        this.message = message;
+        this.notice = null;
+    }
+
+    public NoticeResponse(int status, Object notice) {
+        this.status = status;
+        this.message = "";
+        this.notice = notice;
     }
 }
