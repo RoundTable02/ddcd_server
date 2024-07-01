@@ -1,11 +1,9 @@
 package com.dadingcoding.web.controller;
 
-import com.dadingcoding.web.controller.dto.response.ExceptResponse;
 import com.dadingcoding.web.domain.Member;
 import com.dadingcoding.web.security.UserAdaptor;
 import com.dadingcoding.web.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,7 +16,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/user")
-public class MypageController {
+public class ProfileController {
     private final MemberService memberService;
 
     @GetMapping("/profile")

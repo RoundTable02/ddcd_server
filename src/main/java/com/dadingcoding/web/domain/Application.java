@@ -13,8 +13,4 @@ public class Application extends PostEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-
-    private String title;
-
-    private String content;
 }

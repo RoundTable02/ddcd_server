@@ -70,6 +70,4 @@ public class AdminController {
     public ReportDetailResponseDto findReport(@PathVariable Long reportId) {
         return adminService.findReport(reportId);
     }
-
-
 }
