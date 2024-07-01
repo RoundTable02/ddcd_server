@@ -10,6 +10,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.time.LocalDateTime;
 
+@SpringBootApplication
+@EnableJpaAuditing
+@EntityListeners(AuditingEntityListener.class)
 @Entity
 @Getter
 @Setter
@@ -21,12 +24,6 @@ public class Notice extends BaseEntity {
     @Column(name = "notice_id", updatable = false)
     private Long id;
 
-    @Column(name = "title", nullable = false)
-    private String title;
-
-    @Column(name = "content", nullable = false)
-    private String content;
-
     @Column(name = "visibility")
     private String visibility;
 
@@ -36,15 +33,15 @@ public class Notice extends BaseEntity {
 
     @Builder
     public Notice(String title, String content, String visibility, Member member) {
-        this.title = title;
-        this.content = content;
+        this.setTitle(title);
+        this.setContent(content);
         this.visibility = visibility;
         this.member = member;
     }
 
     public void update(String title, String content, String visibility) {
-        this.title = title;
-        this.content = content;
+        this.setTitle(title);
+        this.setContent(content);
         this.visibility = visibility;
     }
 }

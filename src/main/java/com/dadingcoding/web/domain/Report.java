@@ -1,6 +1,7 @@
 package com.dadingcoding.web.domain;
 
 import jakarta.persistence.*;
+
 import lombok.Data;
 import lombok.Setter;
 
