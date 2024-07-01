@@ -1,11 +1,11 @@
 package com.dadingcoding.web.controller;
 
+import com.dadingcoding.web.controller.dto.response.NoticeResponse;
 import com.dadingcoding.web.domain.Member;
 import com.dadingcoding.web.domain.Notice;
 import com.dadingcoding.web.controller.dto.request.AddNoticeRequest;
 import com.dadingcoding.web.controller.dto.request.UpdateNoticeRequest;
 import com.dadingcoding.web.domain.Role;
-import com.dadingcoding.web.response.ExceptResponse;
 import com.dadingcoding.web.response.Response;
 import com.dadingcoding.web.security.UserAdaptor;
 import com.dadingcoding.web.service.NoticeService;
@@ -41,7 +41,7 @@ public class NoticeController {
 
         // 성공적인 응답 반환
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new Response(200, noticeResponse));
+                .body(new NoticeResponse(200, noticeResponse));
     }
 
     @GetMapping
@@ -71,7 +71,7 @@ public class NoticeController {
 
         // 성공적인 응답 반환
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new Response(200, noticeResponses));
+                .body(new NoticeResponse(200, noticeResponses));
     }
 
     @PostMapping

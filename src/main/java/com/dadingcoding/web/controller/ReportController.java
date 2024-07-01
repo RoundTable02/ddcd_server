@@ -22,31 +22,23 @@ public class ReportController {
 
     @PostMapping
     public ResponseEntity<?> createReport(@AuthenticationPrincipal UserAdaptor userAdaptor, @RequestBody ReportRequestDto requestDto) {
-        try {
-            Report report = new Report();
-            report.setMember(userAdaptor.getMember());
-            report.setTitle(requestDto.getTitle());
-            report.setContent(requestDto.getContent());
-            report = reportRepository.save(report);
-            return ResponseEntity.status(HttpStatus.CREATED).body(ReportResponseDto.fromEntity(report));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ExceptResponse(500, "서버 내부 오류", false));
-        }
+        Report report = new Report();
+        report.setMember(userAdaptor.getMember());
+        report.setTitle(requestDto.getTitle());
+        report.setContent(requestDto.getContent());
+        report = reportRepository.save(report);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ReportResponseDto.fromEntity(report));
     }
 
     @PutMapping("/{reportId}")
     public ResponseEntity<?> updateReport(@PathVariable Long reportId, @AuthenticationPrincipal UserAdaptor userAdaptor, @RequestBody ReportRequestDto requestDto) {
-        try {
-            Report report = reportRepository.findById(reportId).orElseThrow(() -> new RuntimeException("Report not found"));
-            if (!report.getMember().getId().equals(userAdaptor.getMember().getId())) {
-                throw new RuntimeException("이 보고서를 수정할 권한이 없습니다");
-            }
-            report.setTitle(requestDto.getTitle());
-            report.setContent(requestDto.getContent());
-            report = reportRepository.save(report);
-            return ResponseEntity.status(HttpStatus.OK).body(ReportResponseDto.fromEntity(report));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ExceptResponse(500, "서버 내부 오류", false));
+        Report report = reportRepository.findById(reportId).orElseThrow(() -> new RuntimeException("Report not found"));
+        if (!report.getMember().getId().equals(userAdaptor.getMember().getId())) {
+            throw new RuntimeException("이 보고서를 수정할 권한이 없습니다");
         }
+        report.setTitle(requestDto.getTitle());
+        report.setContent(requestDto.getContent());
+        report = reportRepository.save(report);
+        return ResponseEntity.status(HttpStatus.OK).body(ReportResponseDto.fromEntity(report));
     }
 }
