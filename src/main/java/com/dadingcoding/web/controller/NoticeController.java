@@ -78,6 +78,7 @@ public class NoticeController {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new Response(200, noticeResponses));
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ExceptResponse(500, "서버 내부 오류", false));
         }
     }

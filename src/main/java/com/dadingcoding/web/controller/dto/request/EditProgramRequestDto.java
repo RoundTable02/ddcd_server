@@ -1,6 +1,5 @@
 package com.dadingcoding.web.controller.dto.request;
 
-import com.dadingcoding.web.domain.Program;
 import com.dadingcoding.web.domain.ProgramStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,10 +25,10 @@ public class EditProgramRequestDto {
 
     private String title;
     private String description;
-    private String programPic;
+    private String program_pic;
     private List<Long> tutors;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDateTime start_date;
+    private LocalDateTime end_date;
     private ProgramStatus status;
     private String details;
 }

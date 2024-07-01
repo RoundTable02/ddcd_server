@@ -1,13 +1,12 @@
 package com.dadingcoding.web.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+
+import lombok.Data;
 import lombok.Setter;
 
-@Entity
-@Getter
-@Setter
-public class Report extends BaseEntity {
+@Entity @Data
+public class Report extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "report_id")
@@ -16,4 +15,12 @@ public class Report extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "schedule_id")
+    private Schedule schedule;
+
+    private String title;
+
+    private String content;
 }

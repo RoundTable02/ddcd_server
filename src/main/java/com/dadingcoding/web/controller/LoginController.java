@@ -1,24 +1,18 @@
 package com.dadingcoding.web.controller;
 
+import com.dadingcoding.web.controller.dto.response.MemberLoginResponseDto;
 import com.dadingcoding.web.controller.dto.request.MemberLoginDto;
 import com.dadingcoding.web.controller.dto.request.MemberSignInDto;
 import com.dadingcoding.web.controller.dto.request.ValidateEmailRequestDto;
 import com.dadingcoding.web.controller.dto.response.AccessTokenDto;
-import com.dadingcoding.web.controller.dto.response.LoginResponseDto;
 import com.dadingcoding.web.controller.dto.response.ValidateEmailResponseDto;
 import com.dadingcoding.web.response.Response;
-import com.dadingcoding.web.security.JwtToken;
 import com.dadingcoding.web.service.MemberLoginService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -39,13 +33,12 @@ public class LoginController {
     @PostMapping("/signup")
     public ResponseEntity<Response> signIn(@RequestBody MemberSignInDto memberSignInDto) {
         memberLoginService.save(memberSignInDto.toEntity());
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new Response(200, "회원가입에 성공하였습니다."));
-        // TODO : Response 추가 필요
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new Response(200, "회원가입이 완료되었습니다."));
     }
 
     @PostMapping("/login")
-    public LoginResponseDto login(@RequestBody MemberLoginDto memberLoginDto) {
+    public MemberLoginResponseDto login(@RequestBody MemberLoginDto memberLoginDto) {
         return memberLoginService.makeToken(memberLoginDto.getEmail(), memberLoginDto.getPassword());
     }
 

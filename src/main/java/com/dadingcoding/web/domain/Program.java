@@ -23,7 +23,7 @@ public class Program extends BaseEntity{
     private String programPic;
 
     @Setter
-    @OneToMany(mappedBy = "program", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "program", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProgramMember> programMembers = new ArrayList<>();
 
     private LocalDateTime startDate;
@@ -32,4 +32,14 @@ public class Program extends BaseEntity{
     private ProgramStatus status;
 
     private String details;
+
+    public void update(String title, String description, String programPic, LocalDateTime startDate, LocalDateTime endDate, ProgramStatus status, String details) {
+        this.title = title;
+        this.description = description;
+        this.programPic = programPic;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.status = status;
+        this.details = details;
+    }
 }

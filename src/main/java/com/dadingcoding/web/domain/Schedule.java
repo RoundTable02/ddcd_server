@@ -3,13 +3,14 @@ package com.dadingcoding.web.domain;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity @Builder
+@Entity @Builder @Getter
 @AllArgsConstructor @NoArgsConstructor
 public class Schedule extends BaseEntity {
 
@@ -26,7 +27,7 @@ public class Schedule extends BaseEntity {
     @JoinColumn(name = "mentee_id")
     private Member mentee;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "schedule_time_list")
     private List<ScheduleTime> scheduleTimeList = new ArrayList<>();
 

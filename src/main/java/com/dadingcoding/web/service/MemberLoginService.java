@@ -1,6 +1,6 @@
 package com.dadingcoding.web.service;
 
-import com.dadingcoding.web.controller.dto.response.LoginResponseDto;
+import com.dadingcoding.web.controller.dto.response.MemberLoginResponseDto;
 import com.dadingcoding.web.controller.dto.response.SimpleMemberResponseDto;
 import com.dadingcoding.web.controller.dto.response.ValidateEmailResponseDto;
 import com.dadingcoding.web.domain.Member;
@@ -35,7 +35,7 @@ public class MemberLoginService {
 
 
     @Transactional
-    public LoginResponseDto makeToken(String email, String password) {
+    public MemberLoginResponseDto makeToken(String email, String password) {
 
         UsernamePasswordAuthenticationToken authenticationFilter
                 = new UsernamePasswordAuthenticationToken(email, password);
@@ -46,21 +46,25 @@ public class MemberLoginService {
             authentication = authenticationManagerBuilder.getObject().authenticate(authenticationFilter);
         } catch (Exception e) {
             e.printStackTrace();
+            throw e;
         }
 
         JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
 
-        LoginResponseDto loginResponseDto = LoginResponseDto.builder().jwtToken(jwtToken).build();
+        SimpleMemberResponseDto simpleMemberResponseDto = null;
 
         // 이메일 존재하면 refresh
         Optional<Member> member = memberRepository.findByEmail(email);
         if (member.isPresent()) {
-            member.get().setRefreshToken(jwtToken.getRefreshToken());
-            SimpleMemberResponseDto simpleMemberResponseDto = SimpleMemberResponseDto.toDto(member.get());
-            loginResponseDto.setUser(simpleMemberResponseDto);
+            Member findMember = member.get();
+            findMember.setRefreshToken(jwtToken.getRefreshToken());
+            simpleMemberResponseDto = SimpleMemberResponseDto.toDto(findMember);
         }
 
-        return loginResponseDto;
+        return MemberLoginResponseDto.builder()
+                .token(jwtToken.getAccessToken())
+                .user(simpleMemberResponseDto)
+                .build();
     }
 
     // username, refreshToken으로 검증 -> accessToken 토큰 생성

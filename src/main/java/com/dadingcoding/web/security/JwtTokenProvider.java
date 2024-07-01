@@ -111,15 +111,19 @@ public class JwtTokenProvider {
             return true;
         } catch (SecurityException | MalformedJwtException e) {
             log.info("Invalid JWT Token", e);
+            throw e;
         } catch (ExpiredJwtException e) {
             log.info("Expired JWT Token", e);
             // 만료 토큰 재발급 필요
+            throw e;
         } catch (UnsupportedJwtException e) {
             log.info("Unsupported JWT Token", e);
+            throw e;
         } catch (IllegalArgumentException e) {
             log.info("JWT claims string is empty.", e);
+            throw e;
         }
-        return false;
+//        return false;
     }
 
     // 넘어온 accessToken의 정보 조회
