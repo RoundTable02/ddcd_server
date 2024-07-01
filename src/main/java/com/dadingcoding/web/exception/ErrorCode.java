@@ -9,6 +9,8 @@ public enum ErrorCode {
     //4XX Client error response
     //400 Bad Request
     NOT_AVAILABLE_TOKEN("토큰이 유효하지 않습니다."),
+
+    //401 UNAUTHORIZED
     WRONG_TOKEN_TYPE("올바르지 않은 토큰입니다."),
     EXPIRED_TOKEN("토큰이 만료되었습니다. 다시 로그인하세요."),
     BAD_CREDENTIALS("회원정보가 없습니다."),
