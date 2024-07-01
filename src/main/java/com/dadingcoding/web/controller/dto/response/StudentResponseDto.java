@@ -28,8 +28,8 @@ public class StudentResponseDto {
      */
     private Long studentId;
     private String name;
-    private String phone;
     private String email;
+    private String phone;
 
     @Setter
     private String application;
