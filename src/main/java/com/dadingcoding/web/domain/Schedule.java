@@ -12,7 +12,7 @@ import java.util.List;
 
 @Entity @Builder @Getter
 @AllArgsConstructor @NoArgsConstructor
-public class Schedule extends BaseEntity {
+public class Schedule extends PostEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +33,4 @@ public class Schedule extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private ScheduleType scheduleType;
-
-    private String title;
-    private String content;
 }

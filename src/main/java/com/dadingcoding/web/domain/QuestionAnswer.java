@@ -6,15 +6,11 @@ import lombok.Getter;
 import java.util.List;
 
 @Entity @Getter
-public class QuestionAnswer extends BaseEntity{
+public class QuestionAnswer extends PostEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "question_answer_id")
     private Long id;
-
-    private String title;
-
-    private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
