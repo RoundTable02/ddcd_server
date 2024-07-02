@@ -62,7 +62,8 @@ public class MemberLoginService {
         }
 
         return MemberLoginResponseDto.builder()
-                .token(jwtToken.getAccessToken())
+                .accessToken(jwtToken.getAccessToken())
+                .refreshToken(jwtToken.getRefreshToken())
                 .user(simpleMemberResponseDto)
                 .build();
     }

@@ -3,10 +3,10 @@ package com.dadingcoding.web.controller.dto.request;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter @NoArgsConstructor
+@Getter
 @AllArgsConstructor
-public class TutorRoleRequestDto {
-    private String role;
+@NoArgsConstructor
+public class RefreshTokenRequestDto {
+    private String email;
 }

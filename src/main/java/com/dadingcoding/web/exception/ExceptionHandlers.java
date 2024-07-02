@@ -63,20 +63,6 @@ public class ExceptionHandlers  {
                 .body(new ExceptResponse(401, e.getMessage(), false));
     }
 
-    @ExceptionHandler(MalformedJwtException.class)
-    public ResponseEntity<ExceptResponse> handleMalformedJwtException(MalformedJwtException e) {
-        log.error("ERROR", e);
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(new ExceptResponse(401, WRONG_TOKEN_TYPE.getMessage(), false));
-    }
-
-    @ExceptionHandler(ExpiredJwtException.class)
-    public ResponseEntity<ExceptResponse> handleExpiredJwtException(ExpiredJwtException e) {
-        log.error("ERROR", e);
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(new ExceptResponse(401, EXPIRED_TOKEN.getMessage(), false));
-    }
-
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ExceptResponse> badCredentialsException(BadCredentialsException e) {
         log.error("ERROR", e);

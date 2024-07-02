@@ -18,8 +18,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
-    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final JwtExceptionFilter jwtExceptionFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -42,11 +42,17 @@ public class SecurityConfig {
                 .addFilterBefore(
                         new JwtAuthenticationFilter(jwtTokenProvider),
                         UsernamePasswordAuthenticationFilter.class
-                ).exceptionHandling((exceptionConfig)->
+                )
+                .addFilterBefore(
+                        jwtExceptionFilter,
+                        JwtAuthenticationFilter.class
+                )
+                .exceptionHandling((exceptionConfig)->
                         exceptionConfig
                                 .accessDeniedHandler(jwtAccessDeniedHandler)
-                                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                ).build();
+//                                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                )
+                .build();
     }
 
     @Bean

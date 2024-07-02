@@ -47,10 +47,10 @@ public class ProgramService {
         Program program = requestDto.toEntity();
         programRepository.save(program);
 
-        List<Long> mentorIds = requestDto.getTutors();
+        List<Long> mentorIds = requestDto.getMentors();
 
-        for (Long tutorId : mentorIds) {
-            Member mentor = memberRepository.findById(tutorId)
+        for (Long mentorId : mentorIds) {
+            Member mentor = memberRepository.findById(mentorId)
                     .orElseThrow(() -> new NoSuchElementException("찾는 튜터가 없습니다."));
 
             ProgramMember programMember = ProgramMember.builder()
@@ -69,7 +69,7 @@ public class ProgramService {
         program.update(requestDto.getTitle(), requestDto.getDescription(), requestDto.getProgram_pic(), requestDto.getStart_date(),
                 requestDto.getEnd_date(), requestDto.getStatus(), requestDto.getDetails());
 
-        List<Long> afterMemberIds = requestDto.getTutors();
+        List<Long> afterMemberIds = requestDto.getMentors();
         Collections.sort(afterMemberIds);
 
         List<Long> orgMemberIds = program.getProgramMembers().stream()
@@ -84,8 +84,8 @@ public class ProgramService {
             // 모든 멤버 삭제 후 저장
             programMemberRepository.deleteAllByIds(programMemberIds);
 
-            for (Long tutorId : afterMemberIds) {
-                Member mentor = memberRepository.findById(tutorId)
+            for (Long mentorId : afterMemberIds) {
+                Member mentor = memberRepository.findById(mentorId)
                         .orElseThrow(() -> new NoSuchElementException("찾는 튜터가 없습니다."));
 
                 ProgramMember programMember = ProgramMember.builder()

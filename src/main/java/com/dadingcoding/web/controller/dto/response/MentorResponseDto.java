@@ -1,6 +1,5 @@
 package com.dadingcoding.web.controller.dto.response;
 
-import com.dadingcoding.web.domain.Application;
 import com.dadingcoding.web.domain.Member;
 import com.dadingcoding.web.domain.Role;
 import com.dadingcoding.web.domain.Schedule;
@@ -9,13 +8,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter @Builder
 @AllArgsConstructor
-public class TutorResponseDto {
-    private Long tutor_id;
+public class MentorResponseDto {
+    private Long mentor_id;
     private String name;
     private String email;
     private String phone;
@@ -26,14 +24,14 @@ public class TutorResponseDto {
     private Role role;
 
     @Setter
-    private List<Schedule> interview_schedule;
+    private List<String> interview_schedule;
 
     @Setter
-    private List<Schedule> class_schedule;
+    private List<String> class_schedule;
 
-    public static TutorResponseDto toDto(Member member) {
-        return TutorResponseDto.builder()
-                .tutor_id(member.getId())
+    public static MentorResponseDto toDto(Member member) {
+        return MentorResponseDto.builder()
+                .mentor_id(member.getId())
                 .name(member.getUsername())
                 .email(member.getEmail())
                 .phone(member.getPhone())

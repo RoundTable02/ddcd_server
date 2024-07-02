@@ -27,4 +27,6 @@ public class Schedule extends PostEntity {
 
     @Enumerated(EnumType.STRING)
     private ScheduleType scheduleType;
+
+    private String sessionNumber;
 }

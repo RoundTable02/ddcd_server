@@ -1,5 +1,6 @@
 package com.dadingcoding.web.controller;
 
+import com.dadingcoding.web.controller.dto.request.RefreshTokenRequestDto;
 import com.dadingcoding.web.controller.dto.response.MemberLoginResponseDto;
 import com.dadingcoding.web.controller.dto.request.MemberLoginDto;
 import com.dadingcoding.web.controller.dto.request.MemberSignInDto;
@@ -45,17 +46,19 @@ public class LoginController {
     }
 
     @PostMapping("/refresh")
-    public AccessTokenDto refreshToken(@RequestBody MemberSignInDto memberSignInDto, @CookieValue("refreshToken") String refreshToken) {
+    public AccessTokenDto refreshToken(@RequestBody RefreshTokenRequestDto refreshTokenRequestDto, @CookieValue("refreshToken") String refreshToken) {
         // Cookie -> RefreshToken 받아서
         // DB상의 Refresh 토큰과 동일 && 만료되지 않았는지 확인 -> 재발급
-        String accessToken = memberLoginService.refresh(memberSignInDto.getEmail(), refreshToken);
+        String accessToken = memberLoginService.refresh(refreshTokenRequestDto.getEmail(), refreshToken);
 
         return new AccessTokenDto(200, accessToken);
     }
 
     @PostMapping("/logout")
     public ResponseEntity<Response> logout(@AuthenticationPrincipal UserAdaptor userAdaptor) {
-        memberLoginService.logout(userAdaptor.getMember());
+//        if (userAdaptor != null) {
+            memberLoginService.logout(userAdaptor.getMember());
+//        }
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new Response(200, "로그아웃에 성공하였습니다."));

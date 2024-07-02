@@ -1,8 +1,10 @@
 package com.dadingcoding.web.service;
 
-import com.dadingcoding.web.controller.dto.request.AdminScheduleRequestDto;
+import com.dadingcoding.web.controller.dto.request.AdminInterviewScheduleRequestDto;
+import com.dadingcoding.web.controller.dto.request.AdminClassScheduleRequestDto;
 import com.dadingcoding.web.controller.dto.response.*;
 import com.dadingcoding.web.domain.*;
+import com.dadingcoding.web.domain.QnA.Question;
 import com.dadingcoding.web.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,40 +26,46 @@ public class AdminService {
     private final ScheduleRepository scheduleRepository;
     private final ReportRepository reportRepository;
     private final ApplicationRepository applicationRepository;
-    private final QuestionAnswerRepository questionAnswerRepository;
+    private final QuestionRepository questionRepository;
 
-    public List<TutorResponseDto> findAllMentors() {
-        List<Member> tutors = memberRepository.findAllByRole(Role.MENTOR);
+    public List<MentorResponseDto> findAllMentors() {
+        List<Member> mentors = memberRepository.findAllByRole(Role.MENTOR);
 
-        List<TutorResponseDto> dtos = new ArrayList<>();
+        List<MentorResponseDto> dtos = new ArrayList<>();
 
-        for (Member tutor : tutors) {
-            dtos.add(toTutorDto(tutor));
+        for (Member mentor : mentors) {
+            dtos.add(toMentorDto(mentor));
         }
 
         return dtos;
     }
 
-    public TutorResponseDto findTutorById(Long tutorId) {
-        Member tutor = memberRepository.findById(tutorId)
+    public MentorResponseDto findMentorById(Long mentorId) {
+        Member mentor = memberRepository.findById(mentorId)
                 .orElseThrow(() -> new NoSuchElementException("해당 유저가 존재하지 않습니다."));
-        return toTutorDto(tutor);
+        return toMentorDto(mentor);
     }
 
-    private TutorResponseDto toTutorDto(Member member) {
-        TutorResponseDto dto = TutorResponseDto.toDto(member);
+    private MentorResponseDto toMentorDto(Member member) {
+        MentorResponseDto dto = MentorResponseDto.toDto(member);
 
         List<Member> mentees = member.getMentees();
-        List<Schedule> classSchedules = new ArrayList<>();
+        List<String> classSchedules = new ArrayList<>();
         for (Member mentee : mentees) {
             List<Schedule> menteeClassSchedule = mentee.getSchedules().stream()
                     .filter(s -> s.getScheduleType().equals(ScheduleType.CLASS))
                     .collect(Collectors.toList());
-            classSchedules.addAll(menteeClassSchedule); // 멘티의 스케줄은 멘토의 스케줄
+            for (Schedule schedule : menteeClassSchedule) {
+                classSchedules.addAll(schedule.getScheduleTime());
+            }
         }
-        List<Schedule> classSchedulesDistinct = classSchedules.stream().distinct().collect(Collectors.toList()); // 중복 제거
+        List<String> classSchedulesDistinct = classSchedules.stream().distinct().collect(Collectors.toList()); // 중복 제거
 
         List<Schedule> interviewSchedules = member.getSchedules(); // 멘토 자신이 멘티인 경우는 인터뷰
+        List<String> interviewScheduleTimes = new ArrayList<>();
+        for (Schedule interviewSchedule : interviewSchedules) {
+            interviewScheduleTimes.addAll(interviewSchedule.getScheduleTime());
+        }
 
         Application application = null;
         try {
@@ -67,7 +75,7 @@ public class AdminService {
         }
 
         dto.setClass_schedule(classSchedulesDistinct);
-        dto.setInterview_schedule(interviewSchedules);
+        dto.setInterview_schedule(interviewScheduleTimes);
         if (application != null)
             dto.setApplication(application.getContent());
 
@@ -80,29 +88,57 @@ public class AdminService {
     }
 
     @Transactional
-    public void changeTutorRole(Long tutorId, String role) {
-        Member tutor = memberRepository.findById(tutorId)
+    public void changeMentorRole(Long mentorId, String role) {
+        Member mentor = memberRepository.findById(mentorId)
                 .orElseThrow(() -> new NoSuchElementException("해당 유저가 존재하지 않습니다."));
 
-        tutor.setRole(Role.valueOf(role));
+        mentor.setRole(Role.valueOf(role));
     }
 
     @Transactional
-    public void addSchedule(Member member, Long tutorId, AdminScheduleRequestDto adminScheduleRequestDto) {
-        Member tutor = memberRepository.findById(tutorId)
+    public void addInterviewSchedule(Long prementorId, AdminInterviewScheduleRequestDto adminInterviewScheduleRequestDto) {
+        // 어드민 - 멘토 인터뷰 일정 추가
+
+        Member prementor = memberRepository.findById(prementorId)
                 .orElseThrow(() -> new NoSuchElementException("해당 유저가 존재하지 않습니다."));
 
-        LocalDateTime time = adminScheduleRequestDto.getSchedule().getStart_time();
+        LocalDateTime time = adminInterviewScheduleRequestDto.getTime();
 
         Schedule schedule = Schedule.builder()
-                .mentee(tutor)
+                .mentee(prementor)
                 .scheduleTime(List.of(time.toString()))
-                .scheduleType(ScheduleType.valueOf(adminScheduleRequestDto.getSchedule_type()))
-                .build(); // 어드민 - 멘토 인터뷰 일정 추가
-        // TODO : 멘티 ID 추가시 수정 예정
+                .scheduleType(ScheduleType.INTERVIEW)
+                .build();
 
-        schedule.setTitle(adminScheduleRequestDto.getSchedule().getContent());
-        schedule.setContent(adminScheduleRequestDto.getSchedule().getContent());
+        schedule.setTitle(adminInterviewScheduleRequestDto.getTitle());
+        schedule.setContent(adminInterviewScheduleRequestDto.getTitle());
+
+        scheduleRepository.save(schedule);
+    }
+
+    @Transactional
+    public void addClassSchedule(Long mentorId, Long menteeId, AdminClassScheduleRequestDto adminClassScheduleRequestDto) {
+        // 멘토 - 멘티 인터뷰 일정 추가
+
+        Member mentor = memberRepository.findById(mentorId)
+                .orElseThrow(() -> new NoSuchElementException("해당 유저가 존재하지 않습니다."));
+
+        Member mentee = memberRepository.findById(menteeId)
+                .orElseThrow(() -> new NoSuchElementException("해당 유저가 존재하지 않습니다."));
+
+        mentee.setMentor(mentor);
+
+        LocalDateTime time = adminClassScheduleRequestDto.getTime();
+
+        Schedule schedule = Schedule.builder()
+                .mentee(mentee)
+                .scheduleTime(List.of(time.toString()))
+                .scheduleType(ScheduleType.CLASS)
+                .sessionNumber(adminClassScheduleRequestDto.getSessionNumber())
+                .build();
+
+        schedule.setTitle(adminClassScheduleRequestDto.getTitle());
+        schedule.setContent(adminClassScheduleRequestDto.getLink());
 
         scheduleRepository.save(schedule);
     }
@@ -128,7 +164,7 @@ public class AdminService {
         if (application != null)
             dto.setApplication(application.getContent());
 
-        List<QuestionAnswer> questions = questionAnswerRepository.findAllByMemberIdAndQnaType(menteeId, QnaType.QUESTION);
+        List<Question> questions = questionRepository.findAllByMemberId(menteeId);
         List<SimpleQuestionDto> questionDtos = questions.stream()
                 .map(SimpleQuestionDto::toDto)
                 .collect(Collectors.toList());

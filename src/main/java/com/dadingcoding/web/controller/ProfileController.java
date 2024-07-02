@@ -1,5 +1,6 @@
 package com.dadingcoding.web.controller;
 
+import com.dadingcoding.web.controller.dto.response.ExceptResponse;
 import com.dadingcoding.web.domain.Member;
 import com.dadingcoding.web.security.UserAdaptor;
 import com.dadingcoding.web.service.MemberService;
