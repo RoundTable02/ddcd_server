@@ -9,6 +9,7 @@ import com.dadingcoding.web.domain.Role;
 import com.dadingcoding.web.response.Response;
 import com.dadingcoding.web.security.UserAdaptor;
 import com.dadingcoding.web.service.NoticeService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/notices")
 public class NoticeController {
