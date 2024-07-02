@@ -10,10 +10,10 @@ import java.util.List;
 
 @Getter @Builder
 @AllArgsConstructor
-public class StudentResponseDto {
+public class MenteeResponseDto {
     /**
      * {
-     *     "student_id": "string",
+     *     "mentee_id": "string",
      *     "name": "string",
      *     "email": "string",
      *     "phone": "string",
@@ -26,7 +26,7 @@ public class StudentResponseDto {
      *     ]
      *   }
      */
-    private Long studentId;
+    private Long menteeId;
     private String name;
     private String email;
     private String phone;
@@ -37,9 +37,9 @@ public class StudentResponseDto {
     @Setter
     private List<SimpleQuestionDto> questions;
 
-    public static StudentResponseDto toDto(Member member) {
-        return StudentResponseDto.builder()
-                .studentId(member.getId())
+    public static MenteeResponseDto toDto(Member member) {
+        return MenteeResponseDto.builder()
+                .menteeId(member.getId())
                 .name(member.getUsername())
                 .email(member.getEmail())
                 .phone(member.getPhone())

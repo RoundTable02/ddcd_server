@@ -1,5 +1,6 @@
 package com.dadingcoding.web.controller.dto.response;
 
+import com.dadingcoding.web.domain.QnA.Question;
 import com.dadingcoding.web.domain.QuestionAnswer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +15,7 @@ public class SimpleQuestionDto {
     public static SimpleQuestionDto toDto(QuestionAnswer questionAnswer) {
         return SimpleQuestionDto.builder()
                 .questionId(questionAnswer.getId())
-                .question(questionAnswer.getTitle())
+                .question(questionAnswer.getContent())
                 .build();
     }
 }

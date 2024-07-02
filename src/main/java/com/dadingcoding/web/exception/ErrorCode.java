@@ -1,7 +1,6 @@
 package com.dadingcoding.web.exception;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
 
 @AllArgsConstructor
 @Getter
@@ -17,7 +16,7 @@ public enum ErrorCode {
     WRONG_ID_PASSWORD("잘못된 이메일 또는 패스워드입니다."),
 
     //403 Forbidden
-    NO_ATHORITY_TO_ACCESS("데이터에 접근 권한이 없습니다."),
+    NO_AUTHORITY_TO_ACCESS("권한이 없는 접근입니다"),
     SCHEDULE_TO_WAIT("아직 열리지 않은 스케줄입니다."),
     SCHEDULE_TO_TERM("종료된 스케줄입니다."),
 

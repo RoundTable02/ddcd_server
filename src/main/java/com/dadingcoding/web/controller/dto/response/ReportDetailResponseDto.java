@@ -20,9 +20,9 @@ public class ReportDetailResponseDto {
      *   "tutor_name": "김채영",
      *   "content": "이번 차시는 반복문을 다뤘음.....",
      *   "date": "2024-06-15",
-     *   "students": [
+     *   "mentees": [
      *     {
-     *       "student_id": "10",
+     *       "mentee_id": "10",
      *       "name": "김ㅇㅇ"
      *     }
      *   ]
@@ -34,12 +34,12 @@ public class ReportDetailResponseDto {
     private String tutorName;
     private String content;
     private LocalDateTime date;
-    private List<SimpleReportStudentDto> students;
+    private List<SimpleReportMenteeDto> mentees;
 
     public static ReportDetailResponseDto toDto(Report report) {
         Schedule schedule = report.getSchedule();
-        Member student = schedule.getMentee();
-        SimpleReportStudentDto studentDto = SimpleReportStudentDto.toDto(student);
+        Member mentee = schedule.getMentee();
+        SimpleReportMenteeDto menteeDto = SimpleReportMenteeDto.toDto(mentee);
 
         return ReportDetailResponseDto.builder()
                 .reportId(report.getId())
@@ -47,7 +47,7 @@ public class ReportDetailResponseDto {
                 .tutorName(report.getMember().getUsername())
                 .content(report.getContent())
                 .date(report.getCreatedAt())
-                .students(List.of(studentDto))
+                .mentees(List.of(menteeDto))
                 .build();
     }
 }
