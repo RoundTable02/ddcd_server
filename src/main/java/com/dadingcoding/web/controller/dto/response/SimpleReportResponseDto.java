@@ -11,13 +11,13 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class SimpleReportResponseDto {
     private Long reportId;
-    private Long tutorId;
+    private Long mentorId;
     private LocalDateTime date;
 
     public static SimpleReportResponseDto toDto(Report report) {
         return SimpleReportResponseDto.builder()
                 .reportId(report.getId())
-                .tutorId(report.getMember().getId())
+                .mentorId(report.getMember().getId())
                 .date(report.getCreatedAt())
                 .build();
     }

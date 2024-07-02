@@ -18,15 +18,15 @@ public class ProgramResponseDto {
     private String description;
     private String details;
     private String program_pic;
-    private List<SimpleTutorDto> tutors;
+    private List<SimpleMentorDto> mentors;
     private LocalDateTime start_date;
     private LocalDateTime end_date;
     private ProgramStatus status;
 
     public static ProgramResponseDto toDto(Program program) {
-        List<SimpleTutorDto> tutorDtoList = program.getProgramMembers().stream()
+        List<SimpleMentorDto> mentorDtoList = program.getProgramMembers().stream()
                 .map(pm -> pm.getMember())
-                .map(m -> SimpleTutorDto.toDto(m))
+                .map(m -> SimpleMentorDto.toDto(m))
                 .collect(Collectors.toList());
 
         return ProgramResponseDto.builder()
@@ -35,7 +35,7 @@ public class ProgramResponseDto {
                 .description(program.getDescription())
                 .program_pic(program.getProgramPic())
                 .details(program.getDetails())
-                .tutors(tutorDtoList)
+                .mentors(mentorDtoList)
                 .start_date(program.getStartDate())
                 .end_date(program.getEndDate())
                 .status(program.getStatus())

@@ -7,13 +7,13 @@ import lombok.Getter;
 
 @Getter @Builder
 @AllArgsConstructor
-public class SimpleTutorDto {
-    private Long tutor_id;
+public class SimpleMentorDto {
+    private Long mentor_id;
     private String name;
 
-    public static SimpleTutorDto toDto(Member member) {
-        return SimpleTutorDto.builder()
-                .tutor_id(member.getId())
+    public static SimpleMentorDto toDto(Member member) {
+        return SimpleMentorDto.builder()
+                .mentor_id(member.getId())
                 .name(member.getUsername())
                 .build();
     }

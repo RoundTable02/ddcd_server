@@ -16,7 +16,7 @@ public class AddProgramRequestDto {
      *   "title": "string",
      *   "description": "string",
      *   "program_pic": "string",
-     *   "tutors": ["string"],
+     *   "mentors": ["string"],
      *   "start_date": "string",
      *   "end_date": "string",
      *   "status": "string", // "ongoing", "completed"
@@ -27,7 +27,7 @@ public class AddProgramRequestDto {
     private String title;
     private String description;
     private String program_pic;
-    private List<Long> tutors;
+    private List<Long> mentors;
     private LocalDateTime start_date;
     private LocalDateTime end_date;
     private ProgramStatus status;
