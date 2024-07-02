@@ -21,19 +21,24 @@ public class ProfileController {
 
     @GetMapping("/profile")
     public ResponseEntity<?> getMyProfile(@AuthenticationPrincipal UserAdaptor userAdaptor) {
-        Member member = userAdaptor.getMember();
+        try {
+            Member member = userAdaptor.getMember();
 
-        // Member 객체를 JSON 형태로 변환하여 반환
-        Map<String, Object> profileResponse = new HashMap<>();
-        profileResponse.put("userId", member.getId());
-        profileResponse.put("username", member.getUsername());
-        profileResponse.put("email", member.getEmail());
-        profileResponse.put("phone", member.getEmail());
-        profileResponse.put("role", member.getRole().toString());
+            // Member 객체를 JSON 형태로 변환하여 반환
+            Map<String, Object> profileResponse = new HashMap<>();
+            profileResponse.put("userId", member.getId());
+            profileResponse.put("username", member.getUsername());
+            profileResponse.put("email", member.getEmail());
+            profileResponse.put("phone", member.getEmail());
+            profileResponse.put("role", member.getRole().toString());
 
-        // 성공적인 응답 반환
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(profileResponse);
+            // 성공적인 응답 반환
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(profileResponse);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ExceptResponse(500, "서버 내부 오류", false));
+        }
     }
 }
 

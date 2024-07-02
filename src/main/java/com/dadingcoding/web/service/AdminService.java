@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class AdminService {
     private final MemberRepository memberRepository;
-    private final ScheduleTimeRepository scheduleTimeRepository;
     private final ScheduleRepository scheduleRepository;
     private final ReportRepository reportRepository;
     private final ApplicationRepository applicationRepository;
@@ -48,8 +47,17 @@ public class AdminService {
     private TutorResponseDto toTutorDto(Member member) {
         TutorResponseDto dto = TutorResponseDto.toDto(member);
 
-        List<Schedule> classSchedules = scheduleRepository.findAllByMentorIdAndScheduleType(member.getId(), ScheduleType.CLASS);
-        List<Schedule> interviewSchedules = scheduleRepository.findAllByMenteeIdAndScheduleType(member.getId(), ScheduleType.INTERVIEW);
+        List<Member> mentees = member.getMentees();
+        List<Schedule> classSchedules = new ArrayList<>();
+        for (Member mentee : mentees) {
+            List<Schedule> menteeClassSchedule = mentee.getSchedules().stream()
+                    .filter(s -> s.getScheduleType().equals(ScheduleType.CLASS))
+                    .collect(Collectors.toList());
+            classSchedules.addAll(menteeClassSchedule); // 멘티의 스케줄은 멘토의 스케줄
+        }
+        List<Schedule> classSchedulesDistinct = classSchedules.stream().distinct().collect(Collectors.toList()); // 중복 제거
+
+        List<Schedule> interviewSchedules = member.getSchedules(); // 멘토 자신이 멘티인 경우는 인터뷰
 
         Application application = null;
         try {
@@ -58,7 +66,7 @@ public class AdminService {
             log.info("유저의 지원서가 존재하지 않습니다.");
         }
 
-        dto.setClass_schedule(classSchedules);
+        dto.setClass_schedule(classSchedulesDistinct);
         dto.setInterview_schedule(interviewSchedules);
         if (application != null)
             dto.setApplication(application.getContent());
@@ -85,15 +93,13 @@ public class AdminService {
                 .orElseThrow(() -> new NoSuchElementException("해당 유저가 존재하지 않습니다."));
 
         LocalDateTime time = adminScheduleRequestDto.getSchedule().getStart_time();
-        ScheduleTime scheduleTime = scheduleTimeRepository.findByAvailableDateTime(time)
-                .orElseThrow(() -> new NoSuchElementException("스케줄이 존재하지 않습니다."));
 
         Schedule schedule = Schedule.builder()
-                .mentor(member)
                 .mentee(tutor)
-                .scheduleTimeList(List.of(scheduleTime))
+                .scheduleTime(List.of(time.toString()))
                 .scheduleType(ScheduleType.valueOf(adminScheduleRequestDto.getSchedule_type()))
-                .build();
+                .build(); // 어드민 - 멘토 인터뷰 일정 추가
+        // TODO : 멘티 ID 추가시 수정 예정
 
         schedule.setTitle(adminScheduleRequestDto.getSchedule().getContent());
         schedule.setContent(adminScheduleRequestDto.getSchedule().getContent());

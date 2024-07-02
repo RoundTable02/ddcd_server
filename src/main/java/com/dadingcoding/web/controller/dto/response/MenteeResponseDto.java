@@ -28,8 +28,8 @@ public class MenteeResponseDto {
      */
     private Long menteeId;
     private String name;
-    private String phone;
     private String email;
+    private String phone;
 
     @Setter
     private String application;

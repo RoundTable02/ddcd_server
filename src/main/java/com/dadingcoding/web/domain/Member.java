@@ -37,6 +37,16 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Role role; //MANAGER, PREMENTOR, MENTOR, MENTEE
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mentor_id")
+    private Member mentor;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "mentor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Member> mentees = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "mentee", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Schedule> schedules = new ArrayList<>();
+
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }

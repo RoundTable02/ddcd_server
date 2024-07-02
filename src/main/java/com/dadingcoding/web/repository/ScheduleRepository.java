@@ -12,9 +12,4 @@ import java.util.Optional;
 
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
-    @Query("select s from Schedule s where s.mentor.id = ?1 and s.scheduleType = ?2")
-    List<Schedule> findAllByMentorIdAndScheduleType(Long id, ScheduleType scheduleType);
-
-    @Query("select s from Schedule s where s.mentee.id = ?1 and s.scheduleType = ?2")
-    List<Schedule> findAllByMenteeIdAndScheduleType(Long id, ScheduleType scheduleType);
 }
