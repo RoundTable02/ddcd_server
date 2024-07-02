@@ -1,17 +1,20 @@
-package com.dadingcoding.web.domain;
+package com.dadingcoding.web.domain.QnA;
 
+import com.dadingcoding.web.domain.BaseEntity;
+import com.dadingcoding.web.domain.Member;
+import com.fasterxml.jackson.databind.ser.Serializers;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
-@Entity @Getter @Setter
-@AllArgsConstructor
-public class Application extends BaseEntity {
+@Entity
+@NoArgsConstructor
+@Getter
+public class Question extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "application_id")
+    @Column(name = "question_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -22,7 +25,7 @@ public class Application extends BaseEntity {
     private String content;
 
     @Builder
-    public Application(Member member, String content) {
+    public Question(Member member, String content) {
         this.member = member;
         this.content = content;
     }

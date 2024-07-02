@@ -33,15 +33,15 @@ public class AdminController {
         return adminService.findTutorById(tutorId);
     }
 
-    @GetMapping("/students")
-    public ListResponseDto<SimpleStudentResponseDto> findAllStudents() {
-        List<SimpleStudentResponseDto> students = adminService.findAllStudents();
-        return new ListResponseDto<>(students.size(), students);
+    @GetMapping("/mentees")
+    public ListResponseDto<SimpleMenteeResponseDto> findAllMentees() {
+        List<SimpleMenteeResponseDto> mentees = adminService.findAllMentees();
+        return new ListResponseDto<>(mentees.size(), mentees);
     }
 
-    @GetMapping("/students/{studentId}")
-    public StudentResponseDto findStudent(@PathVariable Long studentId) {
-        return adminService.findStudentById(studentId);
+    @GetMapping("/mentees/{menteeId}")
+    public MenteeResponseDto findMentee(@PathVariable Long menteeId) {
+        return adminService.findMenteeById(menteeId);
     }
 
     @PutMapping("/tutors/{tutorId}/role")
@@ -70,6 +70,4 @@ public class AdminController {
     public ReportDetailResponseDto findReport(@PathVariable Long reportId) {
         return adminService.findReport(reportId);
     }
-
-
 }

@@ -36,11 +36,10 @@ public class ExceptionHandlers  {
 
     @ExceptionHandler({NoAuthorityToAccessException.class})
     public ResponseEntity<ExceptResponse> handleNoAuthorityToAccessException(NoAuthorityToAccessException e){
-        log.error("ERROR", e);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new ExceptResponse(400, e.getErrorCode().getMessage(), false));
+        log.error("ERROR", e.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(new ExceptResponse(403, e.getErrorCode().getMessage(), false));
     }
-
 
     // Security
     @ExceptionHandler(SecurityException.class)
