@@ -1,13 +1,16 @@
 package com.dadingcoding.web.domain.QnA;
 
+import com.dadingcoding.web.domain.BaseEntity;
 import com.dadingcoding.web.domain.Member;
 import jakarta.persistence.*;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Data
-public class Answer {
+@NoArgsConstructor
+@Getter
+public class Answer extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "answer_id")

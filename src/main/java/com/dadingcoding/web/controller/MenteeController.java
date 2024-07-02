@@ -2,10 +2,9 @@ package com.dadingcoding.web.controller;
 
 import com.dadingcoding.web.controller.dto.request.AddApplicationRequestDto;
 import com.dadingcoding.web.controller.dto.request.AddQuestionRequestDto;
-import com.dadingcoding.web.controller.dto.response.AnswerDto;
-import com.dadingcoding.web.controller.dto.response.ListResponseDto;
-import com.dadingcoding.web.controller.dto.response.QuestionDto;
+import com.dadingcoding.web.controller.dto.response.*;
 import com.dadingcoding.web.domain.Member;
+import com.dadingcoding.web.domain.QnA.Question;
 import com.dadingcoding.web.domain.Role;
 import com.dadingcoding.web.exception.ErrorCode;
 import com.dadingcoding.web.exception.NoAuthorityToAccessException;
@@ -54,28 +53,27 @@ public class MenteeController {
     }
 
     @GetMapping("questions")
-    public ListResponseDto<QuestionDto> findAllQuestions (@AuthenticationPrincipal UserAdaptor userAdaptor) {
+    public ListQuestionResponseDto<QuestionDto> findAllQuestions (@AuthenticationPrincipal UserAdaptor userAdaptor) {
         Member member = userAdaptor.getMember();
         if (member.getRole() != Role.MENTEE) {
             throw new NoAuthorityToAccessException(ErrorCode.NO_AUTHORITY_TO_ACCESS);
         }
 
         List<QuestionDto> questions = menteeService.findAllQuestions(member.getId());
-        return new ListResponseDto<>(questions.size(), questions);
+        return new ListQuestionResponseDto<>(questions);
     }
-//
-//    @GetMapping("questions/{question_id}")
-//    public ListResponseDto<QuestionDto> findAllQuestions (@PathVariable Long question_id,@AuthenticationPrincipal UserAdaptor userAdaptor) {
-//        Member member = userAdaptor.getMember();
-//        if (member.getRole() != Role.MENTEE) {
-//            throw new NoAuthorityToAccessException(ErrorCode.NO_AUTHORITY_TO_ACCESS);
-//        }
-//
-//
-//
-//        List<AnswerDto> answers = menteeService.findAllAnswers(question_id);
-//        return new ListResponseDto<>(answers.size(), answers);
-//    }
+
+    @GetMapping("questions/{question_id}")
+    public ListAnswerResponseDto<AnswerDto> findAllQuestions (@PathVariable Long question_id, @AuthenticationPrincipal UserAdaptor userAdaptor) {
+        Member member = userAdaptor.getMember();
+        if (member.getRole() != Role.MENTEE) {
+            throw new NoAuthorityToAccessException(ErrorCode.NO_AUTHORITY_TO_ACCESS);
+        }
+
+        List<AnswerDto> answers = menteeService.findAllAnswers(question_id);
+        Question question = menteeService.findQuestionById(question_id);
+        return new ListAnswerResponseDto<>(question, answers);
+    }
 
 
 

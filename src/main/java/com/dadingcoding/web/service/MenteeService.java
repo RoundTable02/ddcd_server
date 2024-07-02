@@ -6,7 +6,9 @@ import com.dadingcoding.web.controller.dto.response.AnswerDto;
 import com.dadingcoding.web.controller.dto.response.QuestionDto;
 import com.dadingcoding.web.domain.Application;
 import com.dadingcoding.web.domain.Member;
+import com.dadingcoding.web.domain.QnA.Answer;
 import com.dadingcoding.web.domain.QnA.Question;
+import com.dadingcoding.web.repository.AnswerRepository;
 import com.dadingcoding.web.repository.ApplicationRepository;
 import com.dadingcoding.web.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ public class MenteeService {
 
     private final ApplicationRepository applicationRepository;
     private final QuestionRepository questionRepository;
+    private final AnswerRepository answerRepository;
 
     public void addApplication(Member member, AddApplicationRequestDto request) {
         Application application = request.toEntity(member);
@@ -43,7 +46,19 @@ public class MenteeService {
         return dtos;
     }
 
-//    public List<AnswerDto> findAllAnswers(Long questionId) {
-//        List<>
-//    }
+    public Question findQuestionById(Long id) {
+        return questionRepository.findById(id).get();
+    }
+
+    public List<AnswerDto> findAllAnswers(Long questionId) {
+        List<Answer> answers = answerRepository.findAllByQuestionId(questionId);
+
+        List<AnswerDto> dtos = new ArrayList<>();
+
+        for (Answer answer : answers) {
+            dtos.add(AnswerDto.toDto(answer));
+        }
+
+        return dtos;
+    }
 }
