@@ -60,22 +60,22 @@ public class MenteeController {
             throw new NoAuthorityToAccessException(ErrorCode.NO_AUTHORITY_TO_ACCESS);
         }
 
-        List<QuestionDto> questions = menteeService.findAllQuestions();
+        List<QuestionDto> questions = menteeService.findAllQuestions(member.getId());
         return new ListResponseDto<>(questions.size(), questions);
     }
-
-    @GetMapping("questions/{question_id}")
-    public ListResponseDto<QuestionDto> findAllQuestions (@PathVariable Long question_id,@AuthenticationPrincipal UserAdaptor userAdaptor) {
-        Member member = userAdaptor.getMember();
-        if (member.getRole() != Role.MENTEE) {
-            throw new NoAuthorityToAccessException(ErrorCode.NO_AUTHORITY_TO_ACCESS);
-        }
-
-
-
-        List<AnswerDto> answers = menteeService.findAllAnswers(question_id);
-        return new ListResponseDto<>(answers.size(), answers);
-    }
+//
+//    @GetMapping("questions/{question_id}")
+//    public ListResponseDto<QuestionDto> findAllQuestions (@PathVariable Long question_id,@AuthenticationPrincipal UserAdaptor userAdaptor) {
+//        Member member = userAdaptor.getMember();
+//        if (member.getRole() != Role.MENTEE) {
+//            throw new NoAuthorityToAccessException(ErrorCode.NO_AUTHORITY_TO_ACCESS);
+//        }
+//
+//
+//
+//        List<AnswerDto> answers = menteeService.findAllAnswers(question_id);
+//        return new ListResponseDto<>(answers.size(), answers);
+//    }
 
 
 

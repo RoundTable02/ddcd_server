@@ -31,8 +31,8 @@ public class MenteeService {
         questionRepository.save(question);
     }
 
-    public List<QuestionDto> findAllQuestions() {
-        List<Question> questions = questionRepository.findAll();
+    public List<QuestionDto> findAllQuestions(Long id) {
+        List<Question> questions = questionRepository.findAllByMemberId(id);
 
         List<QuestionDto> dtos = new ArrayList<>();
 
@@ -43,7 +43,7 @@ public class MenteeService {
         return dtos;
     }
 
-    public List<AnswerDto> findAllAnswers(Long questionId) {
-        List<>
-    }
+//    public List<AnswerDto> findAllAnswers(Long questionId) {
+//        List<>
+//    }
 }
