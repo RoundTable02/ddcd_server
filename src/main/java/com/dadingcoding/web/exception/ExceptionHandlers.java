@@ -43,6 +43,13 @@ public class ExceptionHandlers  {
 
 
     // Security
+    @ExceptionHandler(SecurityException.class)
+    public ResponseEntity<ExceptResponse> securityException(SecurityException e) {
+        log.error("ERROR", e);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(new ExceptResponse(401, e.getMessage(), false));
+    }
+
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<ExceptResponse> handleUsernameNotFoundException(UsernameNotFoundException e) {
         log.error("ERROR", e);

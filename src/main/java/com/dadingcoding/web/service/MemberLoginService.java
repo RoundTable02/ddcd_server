@@ -76,7 +76,7 @@ public class MemberLoginService {
                 .orElseThrow(() -> new UsernameNotFoundException("해당하는 회원을 찾을 수 없습니다."));
 
         if (!refreshDBToken.equals(refreshToken)) {
-            throw new SecurityException("Invalid JWT Token");
+            throw new SecurityException("Refresh Token이 만료되었습니다. 다시 로그인 해주세요.");
         }
 
         return jwtTokenProvider.refreshAccessToken(email);
@@ -97,5 +97,10 @@ public class MemberLoginService {
         String password = member.getPassword();
         member.setPassword(passwordEncoder.encode(password));
         memberRepository.save(member);
+    }
+
+    @Transactional
+    public void logout(Member member) {
+        member.setRefreshToken("");
     }
 }
