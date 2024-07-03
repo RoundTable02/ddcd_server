@@ -14,6 +14,17 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
+    public void updateProfile(Long memberId, UpdateProfileRequest request) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("Member not found"));
+
+        member.setUsername(request.getUsername());
+        member.setEmail(request.getEmail());
+        member.setPhone(request.getPhone());
+
+        memberRepository.save(member);
+    }
+
 
     @Transactional
     public Member findMember(Long memberId) {
