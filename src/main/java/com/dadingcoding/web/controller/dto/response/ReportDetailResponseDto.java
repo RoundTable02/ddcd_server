@@ -9,6 +9,7 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter @Builder
 @AllArgsConstructor
@@ -37,17 +38,19 @@ public class ReportDetailResponseDto {
     private List<SimpleReportMenteeDto> mentees;
 
     public static ReportDetailResponseDto toDto(Report report) {
-        Schedule schedule = report.getSchedule();
-        Member mentee = schedule.getMentee();
-        SimpleReportMenteeDto menteeDto = SimpleReportMenteeDto.toDto(mentee);
+        Member mentor = report.getMember();
+        List<Member> mentees = mentor.getMentees();
+        List<SimpleReportMenteeDto> menteeDtos = mentees.stream()
+                .map(SimpleReportMenteeDto::toDto)
+                .collect(Collectors.toList());
 
         return ReportDetailResponseDto.builder()
                 .reportId(report.getId())
-                .tutorId(schedule.getMentee().getId())
-                .tutorName(report.getMember().getUsername())
+                .tutorId(mentor.getId())
+                .tutorName(mentor.getUsername())
                 .content(report.getContent())
                 .date(report.getCreatedAt())
-                .mentees(List.of(menteeDto))
+                .mentees(menteeDtos)
                 .build();
     }
 }

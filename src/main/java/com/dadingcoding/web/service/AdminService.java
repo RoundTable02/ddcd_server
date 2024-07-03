@@ -25,6 +25,7 @@ public class AdminService {
     private final ReportRepository reportRepository;
     private final ApplicationRepository applicationRepository;
     private final QuestionAnswerRepository questionAnswerRepository;
+    private final InterviewRepository interviewRepository
 
     public List<TutorResponseDto> findAllMentors() {
         List<Member> tutors = memberRepository.findAllByRole(Role.MENTOR);
@@ -50,14 +51,11 @@ public class AdminService {
         List<Member> mentees = member.getMentees();
         List<Schedule> classSchedules = new ArrayList<>();
         for (Member mentee : mentees) {
-            List<Schedule> menteeClassSchedule = mentee.getSchedules().stream()
-                    .filter(s -> s.getScheduleType().equals(ScheduleType.CLASS))
-                    .collect(Collectors.toList());
-            classSchedules.addAll(menteeClassSchedule); // 멘티의 스케줄은 멘토의 스케줄
+            classSchedules.addAll(mentee.getSchedules()); // 멘티의 스케줄은 멘토의 스케줄
         }
         List<Schedule> classSchedulesDistinct = classSchedules.stream().distinct().collect(Collectors.toList()); // 중복 제거
 
-        List<Schedule> interviewSchedules = member.getSchedules(); // 멘토 자신이 멘티인 경우는 인터뷰
+        List<Interview> interviewSchedules = interviewRepository.findAllByIntervieweeId(member.getId());
 
         Application application = null;
         try {

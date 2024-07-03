@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity @Builder @Getter
 @AllArgsConstructor @NoArgsConstructor
-public class Schedule extends PostEntity {
+public class Interview extends PostEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,9 +19,8 @@ public class Schedule extends PostEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "mentee_id")
-    private Member mentee;
+    @JoinColumn(name = "interviewee_id")
+    private Member interviewee;
 
-    @Convert(converter = StringListConverter.class)
-    private List<String> scheduleTime; // LocalDateTime -> String 으로 저장
+    private String scheduleTime;
 }

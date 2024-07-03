@@ -1,27 +1,34 @@
 package com.dadingcoding.web.domain;
 
-import com.dadingcoding.web.service.StringListConverter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 
-@Entity @Builder @Getter
-@AllArgsConstructor @NoArgsConstructor
-public class Schedule extends PostEntity {
-
+@Entity
+@Builder
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+public class AvailableSchedule extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "schedule_id")
+    @Column(name = "available_schedule_id")
     private Long id;
+
+    @Enumerated(EnumType.STRING)
+    private DayOfWeek dayOfWeek;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mentee_id")
     private Member mentee;
 
-    @Convert(converter = StringListConverter.class)
-    private List<String> scheduleTime; // LocalDateTime -> String 으로 저장
+    private LocalTime time;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 }
