@@ -53,11 +53,19 @@ public class AdminService {
         List<Member> mentees = member.getMentees();
         List<String> classSchedules = new ArrayList<>();
         for (Member mentee : mentees) {
-            classSchedules.addAll(mentee.getSchedules()); // 멘티의 스케줄은 멘토의 스케줄
+            List<Schedule> schedules = mentee.getSchedules();
+            for (Schedule schedule : schedules) {
+                classSchedules.addAll(schedule.getScheduleTime()); // 멘티의 스케줄은 멘토의 스케줄
+            }
         }
         List<String> classSchedulesDistinct = classSchedules.stream().distinct().collect(Collectors.toList()); // 중복 제거
 
         List<Interview> interviewSchedules = interviewRepository.findAllByIntervieweeId(member.getId());
+        List<String> interviewScheduleTimes = new ArrayList<>();
+        if (!interviewSchedules.isEmpty()) {
+            interviewSchedules.stream()
+                            .forEach(interview -> interviewScheduleTimes.add(interview.getScheduleTime()));
+        }
 
         Application application = null;
         try {
@@ -99,7 +107,6 @@ public class AdminService {
         Schedule schedule = Schedule.builder()
                 .mentee(prementor)
                 .scheduleTime(List.of(time.toString()))
-                .scheduleType(ScheduleType.INTERVIEW)
                 .build();
 
         schedule.setTitle(adminInterviewScheduleRequestDto.getTitle());
@@ -125,7 +132,6 @@ public class AdminService {
         Schedule schedule = Schedule.builder()
                 .mentee(mentee)
                 .scheduleTime(List.of(time.toString()))
-                .scheduleType(ScheduleType.CLASS)
                 .sessionNumber(adminClassScheduleRequestDto.getSessionNumber())
                 .build();
 

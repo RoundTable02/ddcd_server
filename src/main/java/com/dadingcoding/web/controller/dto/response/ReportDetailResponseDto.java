@@ -46,8 +46,8 @@ public class ReportDetailResponseDto {
 
         return ReportDetailResponseDto.builder()
                 .reportId(report.getId())
-                .tutorId(mentor.getId())
-                .tutorName(mentor.getUsername())
+                .mentorId(mentor.getId())
+                .mentorName(mentor.getUsername())
                 .content(report.getContent())
                 .date(report.getCreatedAt())
                 .mentees(menteeDtos)
