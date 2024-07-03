@@ -111,17 +111,17 @@ public class JwtTokenProvider {
             return true;
         } catch (SecurityException | MalformedJwtException e) {
             log.info("Invalid JWT Token", e);
-            throw e;
+            throw new JwtException("올바르지 않은 토큰입니다.");
         } catch (ExpiredJwtException e) {
             log.info("Expired JWT Token", e);
             // 만료 토큰 재발급 필요
-            throw e;
+            throw new JwtException("Access Token이 만료되었습니다. 토큰을 갱신해 주세요.");
         } catch (UnsupportedJwtException e) {
             log.info("Unsupported JWT Token", e);
-            throw e;
+            throw new JwtException("올바르지 않은 토큰입니다.");
         } catch (IllegalArgumentException e) {
             log.info("JWT claims string is empty.", e);
-            throw e;
+            throw new JwtException("정상적이지 않은 접근입니다.");
         }
 //        return false;
     }

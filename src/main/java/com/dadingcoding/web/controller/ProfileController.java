@@ -1,5 +1,6 @@
 package com.dadingcoding.web.controller;
 
+import com.dadingcoding.web.controller.dto.response.ExceptResponse;
 import com.dadingcoding.web.domain.Member;
 import com.dadingcoding.web.security.UserAdaptor;
 import com.dadingcoding.web.service.MemberService;
@@ -23,22 +24,32 @@ public class ProfileController {
     public ResponseEntity<?> getMyProfile(@AuthenticationPrincipal UserAdaptor userAdaptor) {
         try {
             Member member = userAdaptor.getMember();
-
-            // Member 객체를 JSON 형태로 변환하여 반환
-            Map<String, Object> profileResponse = new HashMap<>();
-            profileResponse.put("userId", member.getId());
-            profileResponse.put("username", member.getUsername());
-            profileResponse.put("email", member.getEmail());
-            profileResponse.put("phone", member.getEmail());
-            profileResponse.put("role", member.getRole().toString());
-
-            // 성공적인 응답 반환
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(profileResponse);
+            return ResponseEntity.status(HttpStatus.OK).body(member);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ExceptResponse(500, "서버 내부 오류", false));
+                    .body(new Response(500, "서버 내부 오류"));
+        }
+    }
+
+    @PutMapping("/profile")
+    public ResponseEntity<?> updateProfile(@AuthenticationPrincipal UserAdaptor userAdaptor,
+                                           @RequestBody UpdateProfileRequest request) {
+        try {
+            Member member = userAdaptor.getMember();
+
+            // 프로필 정보 업데이트
+            member.setUsername(request.getUsername());
+            member.setEmail(request.getEmail());
+            member.setPhone(request.getPhone());
+
+            // 업데이트된 회원 정보 저장
+            memberService.updateMember(member);
+
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new Response(200, "프로필이 성공적으로 업데이트되었습니다."));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new Response(500, "서버 내부 오류"));
         }
     }
 }
-

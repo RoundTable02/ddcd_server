@@ -1,7 +1,6 @@
 package com.dadingcoding.web.controller.dto.response;
 
 import com.dadingcoding.web.domain.QnA.Question;
-import com.dadingcoding.web.domain.QuestionAnswer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,10 +11,10 @@ public class SimpleQuestionDto {
     private Long questionId;
     private String question;
 
-    public static SimpleQuestionDto toDto(QuestionAnswer questionAnswer) {
+    public static SimpleQuestionDto toDto(Question question) {
         return SimpleQuestionDto.builder()
-                .questionId(questionAnswer.getId())
-                .question(questionAnswer.getContent())
+                .questionId(question.getId())
+                .question(question.getContent())
                 .build();
     }
 }

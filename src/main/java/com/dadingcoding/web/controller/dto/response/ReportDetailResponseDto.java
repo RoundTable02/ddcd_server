@@ -17,8 +17,8 @@ public class ReportDetailResponseDto {
     /**
      * {
      *   "report_id": "1",
-     *   "tutor_id": "3",
-     *   "tutor_name": "김채영",
+     *   "mentor_id": "3",
+     *   "mentor_name": "김채영",
      *   "content": "이번 차시는 반복문을 다뤘음.....",
      *   "date": "2024-06-15",
      *   "mentees": [
@@ -31,8 +31,8 @@ public class ReportDetailResponseDto {
      */
 
     private Long reportId;
-    private Long tutorId;
-    private String tutorName;
+    private Long mentorId;
+    private String mentorName;
     private String content;
     private LocalDateTime date;
     private List<SimpleReportMenteeDto> mentees;

@@ -3,8 +3,10 @@ package com.dadingcoding.web.controller.dto.request;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Getter @AllArgsConstructor
-public class AdminScheduleRequestDto {
-    private String schedule_type;
-    private SimpleScheduleRequestDto schedule;
+public class AdminInterviewScheduleRequestDto {
+    private LocalDateTime time;
+    private String title;
 }

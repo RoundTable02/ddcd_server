@@ -5,6 +5,6 @@ import lombok.Getter;
 
 @Getter @AllArgsConstructor
 public class AccessTokenDto {
-    private final String email;
+    private final int status;
     private final String accessToken;
 }

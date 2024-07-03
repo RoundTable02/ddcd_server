@@ -1,16 +1,15 @@
 package com.dadingcoding.web.controller;
 
-import com.dadingcoding.web.controller.dto.request.AdminScheduleRequestDto;
+import com.dadingcoding.web.controller.dto.request.AdminInterviewScheduleRequestDto;
+import com.dadingcoding.web.controller.dto.request.AdminClassScheduleRequestDto;
 import com.dadingcoding.web.controller.dto.response.*;
-import com.dadingcoding.web.controller.dto.request.TutorRoleRequestDto;
+import com.dadingcoding.web.controller.dto.request.MentorRoleRequestDto;
 import com.dadingcoding.web.response.Response;
-import com.dadingcoding.web.security.UserAdaptor;
 import com.dadingcoding.web.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,15 +21,15 @@ import java.util.List;
 public class AdminController {
     private final AdminService adminService;
 
-    @GetMapping("/tutors")
-    public ListResponseDto<TutorResponseDto> findAllTutors() {
-        List<TutorResponseDto> allMentors = adminService.findAllMentors();
+    @GetMapping("/mentors")
+    public ListResponseDto<MentorResponseDto> findAllMentors() {
+        List<MentorResponseDto> allMentors = adminService.findAllMentors();
         return new ListResponseDto<>(allMentors.size(), allMentors);
     }
 
-    @GetMapping("/tutors/{tutorId}")
-    public TutorResponseDto findTutor(@PathVariable Long tutorId) {
-        return adminService.findTutorById(tutorId);
+    @GetMapping("/mentors/{mentorId}")
+    public MentorResponseDto findMentor(@PathVariable Long mentorId) {
+        return adminService.findMentorById(mentorId);
     }
 
     @GetMapping("/mentees")
@@ -44,18 +43,23 @@ public class AdminController {
         return adminService.findMenteeById(menteeId);
     }
 
-    @PutMapping("/tutors/{tutorId}/role")
-    public ResponseEntity<Response> changeTutorRole(@PathVariable Long tutorId, @RequestBody TutorRoleRequestDto tutorRoleRequestDto) {
-        adminService.changeTutorRole(tutorId, tutorRoleRequestDto.getRole());
+    @PutMapping("/mentors/{mentorId}/role")
+    public ResponseEntity<Response> changeMentorRole(@PathVariable Long mentorId, @RequestBody MentorRoleRequestDto mentorRoleRequestDto) {
+        adminService.changeMentorRole(mentorId, mentorRoleRequestDto.getRole());
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new Response(200, "멘토 권한이 변경되었습니다."));
     }
 
-    @PostMapping("/tutors/{tutorId}/schedule")
-    public ResponseEntity<Response> addSchedule(
-            @PathVariable Long tutorId, @RequestBody AdminScheduleRequestDto adminScheduleRequestDto,
-            @AuthenticationPrincipal UserAdaptor userAdaptor) {
-        adminService.addSchedule(userAdaptor.getMember(), tutorId, adminScheduleRequestDto);
+    @PostMapping("/prementors/{prementorId}/schedule")
+    public ResponseEntity<Response> addInterviewSchedule(@PathVariable Long prementorId, @RequestBody AdminInterviewScheduleRequestDto adminInterviewScheduleRequestDto) {
+        adminService.addInterviewSchedule(prementorId, adminInterviewScheduleRequestDto);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new Response(200, "일정이 업데이트되었습니다."));
+    }
+
+    @PostMapping("/mentors/{mentorId}/mentees/{menteeId}/schedule")
+    public ResponseEntity<Response> addClassSchedule(@PathVariable Long mentorId, @PathVariable Long menteeId, @RequestBody AdminClassScheduleRequestDto adminClassScheduleRequestDto) {
+        adminService.addClassSchedule(mentorId, menteeId, adminClassScheduleRequestDto);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new Response(200, "일정이 업데이트되었습니다."));
     }
