@@ -1,10 +1,7 @@
 package com.dadingcoding.web.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
@@ -23,12 +20,14 @@ public class AvailableSchedule extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private DayOfWeek dayOfWeek;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "mentee_id")
-    private Member mentee;
-
     private LocalTime time;
 
+    @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @Setter
     @Enumerated(EnumType.STRING)
     private Role role;
 }

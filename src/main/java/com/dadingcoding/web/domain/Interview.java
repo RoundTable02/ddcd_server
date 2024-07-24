@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity @Builder @Getter
 @AllArgsConstructor @NoArgsConstructor
-public class Interview extends PostEntity {
+public class Interview extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,4 +23,10 @@ public class Interview extends PostEntity {
     private Member interviewee;
 
     private String scheduleTime;
+
+    @Column(name = "title", nullable = false)
+    private String title;
+
+    @Column(name = "content", nullable = false)
+    private String content;
 }
