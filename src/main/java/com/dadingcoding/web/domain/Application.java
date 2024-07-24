@@ -1,13 +1,11 @@
 package com.dadingcoding.web.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity @Getter @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class Application extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

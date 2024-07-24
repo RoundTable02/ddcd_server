@@ -5,13 +5,12 @@ import lombok.*;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-@SpringBootApplication
-@EntityListeners(AuditingEntityListener.class)
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Notice extends PostEntity {
+@AllArgsConstructor
+public class Notice extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +23,12 @@ public class Notice extends PostEntity {
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
+
+    @Column(name = "title", nullable = false)
+    private String title;
+
+    @Column(name = "content", nullable = false)
+    private String content;
 
     @Builder
     public Notice(String title, String content, String visibility, Member member) {

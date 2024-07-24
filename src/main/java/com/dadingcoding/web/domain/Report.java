@@ -2,11 +2,12 @@ package com.dadingcoding.web.domain;
 
 import jakarta.persistence.*;
 
-import lombok.Data;
-import lombok.Setter;
+import lombok.*;
 
-@Entity @Data
-public class Report extends PostEntity {
+@Entity @Getter
+@Builder
+@AllArgsConstructor @NoArgsConstructor
+public class Report extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "report_id")
@@ -16,5 +17,6 @@ public class Report extends PostEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    private String date;
+    @Column(name = "content", nullable = false)
+    private String content;
 }

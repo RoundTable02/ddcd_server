@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity @Builder @Getter
 @AllArgsConstructor @NoArgsConstructor
-public class Schedule extends PostEntity {
+public class Schedule extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,4 +26,10 @@ public class Schedule extends PostEntity {
     private List<String> scheduleTime; // LocalDateTime -> String 으로 저장
 
     private String sessionNumber;
+
+    @Column(name = "title", nullable = false)
+    private String title;
+
+    @Column(name = "content", nullable = false)
+    private String content;
 }
