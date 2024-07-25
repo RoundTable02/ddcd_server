@@ -5,6 +5,7 @@ import com.dadingcoding.web.controller.dto.request.AddQuestionRequestDto;
 import com.dadingcoding.web.controller.dto.response.*;
 import com.dadingcoding.web.domain.Member;
 import com.dadingcoding.web.domain.QnA.Question;
+import com.dadingcoding.web.domain.QuestionAnswer;
 import com.dadingcoding.web.domain.Role;
 import com.dadingcoding.web.exception.ErrorCode;
 import com.dadingcoding.web.exception.NoAuthorityToAccessException;
@@ -71,7 +72,7 @@ public class MenteeController {
         }
 
         List<AnswerDto> answers = menteeService.findAllAnswers(question_id);
-        Question question = menteeService.findQuestionById(question_id);
+        QuestionAnswer question = menteeService.findQuestionById(question_id);
         return new ListAnswerResponseDto<>(question, answers);
     }
 

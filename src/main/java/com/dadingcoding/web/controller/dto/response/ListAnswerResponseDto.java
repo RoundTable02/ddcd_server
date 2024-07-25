@@ -1,6 +1,7 @@
 package com.dadingcoding.web.controller.dto.response;
 
 import com.dadingcoding.web.domain.QnA.Question;
+import com.dadingcoding.web.domain.QuestionAnswer;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -16,7 +17,7 @@ public class ListAnswerResponseDto<AnswerDto> {
     private List<AnswerDto> answer;
 
     @Builder
-    public ListAnswerResponseDto(Question question, List<AnswerDto> answer) {
+    public ListAnswerResponseDto(QuestionAnswer question, List<AnswerDto> answer) {
         this.question_id = question.getId();
         this.student_name = question.getMember().getUsername();
         this.question = question.getContent();

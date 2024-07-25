@@ -18,8 +18,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class MentorService {
-    private final QuestionRepository questionRepository;
-    private final AnswerRepository answerRepository;
+    private final QuestionAnswerRepository questionAnswerRepository;
     private final AvailableScheduleRepository availableScheduleRepository;
     private final ReportRepository reportRepository;
     private final BoardPostRepository postRepository;
@@ -46,7 +45,7 @@ public class MentorService {
         List<AnswerResponseDto> schedules = new ArrayList<>();
 
         for (Member mentee : mentees) {
-            List<Question> questions = questionRepository.findAllByMemberId(mentee.getId());
+            List<QuestionAnswer> questions = questionAnswerRepository.findAllByMemberId(mentee.getId());
 
             List<AnswerResponseDto> answerResponseDtos = questions.stream()
                     .map(AnswerResponseDto::toDto)
@@ -60,12 +59,12 @@ public class MentorService {
     }
 
     public void answerMenteeQuestion(Long questionId, AnswerRequestDto answerDto) {
-        Question question = questionRepository.findById(questionId).orElseThrow(() -> new NoSuchElementException("해당하는 질문이 없습니다."));
-        Answer answer = new Answer();
+        QuestionAnswer question = questionAnswerRepository.findById(questionId).orElseThrow(() -> new NoSuchElementException("해당하는 질문이 없습니다."));
+        QuestionAnswer answer = new QuestionAnswer();
         answer.setQuestion(question);
         answer.setContent(answerDto.getAnswer());
         answer.setCreatedAt(LocalDateTime.now());
-        answerRepository.save(answer);
+        questionAnswerRepository.save(answer);
     }
     public void addPreMentorBoardPost(Member member, AddPostRequestDto request) {
         // 예비멘토 게시판 글 추가 로직 구현
