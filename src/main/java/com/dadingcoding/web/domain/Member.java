@@ -49,4 +49,10 @@ public class Member extends BaseEntity {
     }
 
     private String refreshToken;
+
+    public void updateProfile(String username, String email, String phone) {
+        this.username = username;
+        this.email = email;
+        this.phone = phone;
+    }
 }

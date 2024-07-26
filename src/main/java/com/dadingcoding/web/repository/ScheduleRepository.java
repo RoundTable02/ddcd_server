@@ -1,6 +1,5 @@
 package com.dadingcoding.web.repository;
 
-import com.dadingcoding.web.domain.Member;
 import com.dadingcoding.web.domain.Schedule;
 import com.dadingcoding.web.domain.ScheduleType;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,4 +12,6 @@ import java.util.Optional;
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     Optional<Schedule> findByMenteeId(Long id);
+
+    List<Schedule> findByMenteeIdAndScheduleType(Long id, ScheduleType scheduleType);
 }

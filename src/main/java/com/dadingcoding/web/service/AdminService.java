@@ -107,10 +107,10 @@ public class AdminService {
         Schedule schedule = Schedule.builder()
                 .mentee(prementor)
                 .scheduleTime(List.of(time.toString()))
+                .title(adminInterviewScheduleRequestDto.getTitle())
+                .content(adminInterviewScheduleRequestDto.getTitle())
+                .scheduleType(ScheduleType.INTERVIEW)
                 .build();
-
-        schedule.setTitle(adminInterviewScheduleRequestDto.getTitle());
-        schedule.setContent(adminInterviewScheduleRequestDto.getTitle());
 
         scheduleRepository.save(schedule);
     }
@@ -132,11 +132,11 @@ public class AdminService {
         Schedule schedule = Schedule.builder()
                 .mentee(mentee)
                 .scheduleTime(List.of(time.toString()))
+                .scheduleType(ScheduleType.CLASS)
                 .sessionNumber(adminClassScheduleRequestDto.getSessionNumber())
+                .title(adminClassScheduleRequestDto.getTitle())
+                .content(adminClassScheduleRequestDto.getLink())
                 .build();
-
-        schedule.setTitle(adminClassScheduleRequestDto.getTitle());
-        schedule.setContent(adminClassScheduleRequestDto.getLink());
 
         scheduleRepository.save(schedule);
     }

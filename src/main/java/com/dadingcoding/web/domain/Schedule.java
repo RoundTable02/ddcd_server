@@ -22,14 +22,15 @@ public class Schedule extends BaseEntity {
     @JoinColumn(name = "mentee_id")
     private Member mentee;
 
+    @Enumerated(EnumType.STRING)
+    private ScheduleType scheduleType;
+
     @Convert(converter = StringListConverter.class)
     private List<String> scheduleTime; // LocalDateTime -> String 으로 저장
 
     private String sessionNumber;
 
-    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "content", nullable = false)
     private String content;
 }
