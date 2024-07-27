@@ -44,6 +44,9 @@ public class Member extends BaseEntity {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "mentee", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Schedule> schedules = new ArrayList<>();
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AvailableSchedule> availableSchedules = new ArrayList<>();
+
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }

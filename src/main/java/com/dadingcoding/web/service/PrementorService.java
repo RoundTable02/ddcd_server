@@ -28,7 +28,7 @@ public class PrementorService {
     }
 
     public List<InterviewScheduleResponse> getInterviewSchedule(Member member) {
-        List<Schedule> interviews = scheduleRepository.findByMenteeIdAndScheduleType(member.getId(), ScheduleType.CLASS);
+        List<Schedule> interviews = scheduleRepository.findByMenteeIdAndScheduleType(member.getId(), ScheduleType.INTERVIEW);
         return interviews.stream()
                 .map(InterviewScheduleResponse::toDto)
                 .collect(Collectors.toList());
