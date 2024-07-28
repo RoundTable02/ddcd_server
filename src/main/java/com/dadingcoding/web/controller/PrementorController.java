@@ -1,8 +1,8 @@
 package com.dadingcoding.web.controller;
 
 import com.dadingcoding.web.controller.dto.request.AddApplicationRequestDto;
+import com.dadingcoding.web.controller.dto.response.InterviewScheduleResponse;
 import com.dadingcoding.web.controller.dto.response.ListResponseDto;
-import com.dadingcoding.web.response.InterviewScheduleResponse;
 import com.dadingcoding.web.response.Response;
 import com.dadingcoding.web.security.UserAdaptor;
 import com.dadingcoding.web.service.PrementorService;

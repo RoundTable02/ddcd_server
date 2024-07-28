@@ -1,13 +1,13 @@
 package com.dadingcoding.web.service;
 
 import com.dadingcoding.web.controller.dto.request.AddApplicationRequestDto;
+import com.dadingcoding.web.controller.dto.response.InterviewScheduleResponse;
 import com.dadingcoding.web.domain.Application;
 import com.dadingcoding.web.domain.Member;
 import com.dadingcoding.web.domain.Schedule;
 import com.dadingcoding.web.domain.ScheduleType;
 import com.dadingcoding.web.repository.ApplicationRepository;
 import com.dadingcoding.web.repository.ScheduleRepository;
-import com.dadingcoding.web.response.InterviewScheduleResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
