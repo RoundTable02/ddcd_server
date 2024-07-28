@@ -2,7 +2,6 @@ package com.dadingcoding.web.controller.dto.response;
 
 import com.dadingcoding.web.domain.Member;
 import com.dadingcoding.web.domain.Role;
-import com.dadingcoding.web.domain.Schedule;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

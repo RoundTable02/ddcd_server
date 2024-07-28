@@ -1,13 +1,10 @@
 package com.dadingcoding.web.domain;
 
-import com.dadingcoding.web.service.StringListConverter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Entity @Builder @Getter
 @AllArgsConstructor @NoArgsConstructor

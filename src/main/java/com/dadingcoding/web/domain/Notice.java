@@ -2,8 +2,6 @@ package com.dadingcoding.web.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Getter
@@ -17,9 +15,6 @@ public class Notice extends BaseEntity {
     @Column(name = "notice_id", updatable = false)
     private Long id;
 
-    @Column(name = "visibility")
-    private String visibility;
-
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
@@ -31,16 +26,14 @@ public class Notice extends BaseEntity {
     private String content;
 
     @Builder
-    public Notice(String title, String content, String visibility, Member member) {
+    public Notice(String title, String content, Member member) {
         this.setTitle(title);
         this.setContent(content);
-        this.visibility = visibility;
         this.member = member;
     }
 
-    public void update(String title, String content, String visibility) {
+    public void update(String title, String content) {
         this.setTitle(title);
         this.setContent(content);
-        this.visibility = visibility;
     }
 }

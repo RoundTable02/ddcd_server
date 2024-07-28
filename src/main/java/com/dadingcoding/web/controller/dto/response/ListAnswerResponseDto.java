@@ -1,6 +1,5 @@
 package com.dadingcoding.web.controller.dto.response;
 
-import com.dadingcoding.web.domain.QnA.Question;
 import com.dadingcoding.web.domain.QuestionAnswer;
 import lombok.Builder;
 import lombok.Getter;

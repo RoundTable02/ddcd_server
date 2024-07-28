@@ -1,4 +1,4 @@
-package com.dadingcoding.web.response;
+package com.dadingcoding.web.controller.dto.response;
 
 import com.dadingcoding.web.domain.Schedule;
 import lombok.AllArgsConstructor;
