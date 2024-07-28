@@ -14,6 +14,7 @@ import com.dadingcoding.web.repository.ApplicationRepository;
 import com.dadingcoding.web.repository.QuestionAnswerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service @RequiredArgsConstructor
+@Transactional
 public class MenteeService {
 
     private final ApplicationRepository applicationRepository;

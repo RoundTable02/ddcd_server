@@ -5,7 +5,9 @@ import com.dadingcoding.web.controller.dto.response.ExceptResponse;
 import com.dadingcoding.web.controller.dto.response.ReportResponseDto;
 import com.dadingcoding.web.domain.Report;
 import com.dadingcoding.web.repository.ReportRepository;
+import com.dadingcoding.web.response.Response;
 import com.dadingcoding.web.security.UserAdaptor;
+import com.dadingcoding.web.service.ReportService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,27 +20,21 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/tutor/reports")
 public class ReportController {
-    private final ReportRepository reportRepository;
+    private final ReportService reportService;
 
     @PostMapping
-    public ResponseEntity<?> createReport(@AuthenticationPrincipal UserAdaptor userAdaptor, @RequestBody ReportRequestDto requestDto) {
-        Report report = new Report();
-        report.setMember(userAdaptor.getMember());
-        report.setTitle(requestDto.getTitle());
-        report.setContent(requestDto.getContent());
-        report = reportRepository.save(report);
-        return ResponseEntity.status(HttpStatus.CREATED).body(ReportResponseDto.fromEntity(report));
+    public ResponseEntity<Response> createReport(@AuthenticationPrincipal UserAdaptor userAdaptor, @RequestBody ReportRequestDto requestDto) {
+        reportService.createReport(userAdaptor.getMember(), requestDto);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new Response(200, "보고서가 제출되었습니다."));
     }
 
     @PutMapping("/{reportId}")
-    public ResponseEntity<?> updateReport(@PathVariable Long reportId, @AuthenticationPrincipal UserAdaptor userAdaptor, @RequestBody ReportRequestDto requestDto) {
-        Report report = reportRepository.findById(reportId).orElseThrow(() -> new RuntimeException("Report not found"));
-        if (!report.getMember().getId().equals(userAdaptor.getMember().getId())) {
-            throw new RuntimeException("이 보고서를 수정할 권한이 없습니다");
-        }
-        report.setTitle(requestDto.getTitle());
-        report.setContent(requestDto.getContent());
-        report = reportRepository.save(report);
-        return ResponseEntity.status(HttpStatus.OK).body(ReportResponseDto.fromEntity(report));
+    public ResponseEntity<Response> updateReport(@PathVariable Long reportId, @AuthenticationPrincipal UserAdaptor userAdaptor, @RequestBody ReportRequestDto requestDto) {
+        reportService.updateReport(reportId, userAdaptor.getMember(), requestDto);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new Response(200, "보고서가 수정되었습니다."));
     }
 }
