@@ -2,8 +2,6 @@ package com.dadingcoding.web.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Getter

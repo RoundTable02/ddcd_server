@@ -6,17 +6,13 @@ import com.dadingcoding.web.controller.dto.response.AnswerDto;
 import com.dadingcoding.web.controller.dto.response.QuestionDto;
 import com.dadingcoding.web.domain.Application;
 import com.dadingcoding.web.domain.Member;
-import com.dadingcoding.web.domain.QnA.Answer;
-import com.dadingcoding.web.domain.QnA.Question;
 import com.dadingcoding.web.domain.QuestionAnswer;
-import com.dadingcoding.web.repository.AnswerRepository;
 import com.dadingcoding.web.repository.ApplicationRepository;
 import com.dadingcoding.web.repository.QuestionAnswerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;

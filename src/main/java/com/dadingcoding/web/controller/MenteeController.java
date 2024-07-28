@@ -4,7 +4,6 @@ import com.dadingcoding.web.controller.dto.request.AddApplicationRequestDto;
 import com.dadingcoding.web.controller.dto.request.AddQuestionRequestDto;
 import com.dadingcoding.web.controller.dto.response.*;
 import com.dadingcoding.web.domain.Member;
-import com.dadingcoding.web.domain.QnA.Question;
 import com.dadingcoding.web.domain.QuestionAnswer;
 import com.dadingcoding.web.domain.Role;
 import com.dadingcoding.web.exception.ErrorCode;

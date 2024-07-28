@@ -1,10 +1,6 @@
 package com.dadingcoding.web.controller;
 
 import com.dadingcoding.web.controller.dto.request.ReportRequestDto;
-import com.dadingcoding.web.controller.dto.response.ExceptResponse;
-import com.dadingcoding.web.controller.dto.response.ReportResponseDto;
-import com.dadingcoding.web.domain.Report;
-import com.dadingcoding.web.repository.ReportRepository;
 import com.dadingcoding.web.response.Response;
 import com.dadingcoding.web.security.UserAdaptor;
 import com.dadingcoding.web.service.ReportService;

@@ -1,7 +1,6 @@
 package com.dadingcoding.web.controller;
 
 import com.dadingcoding.web.controller.dto.request.UpdateProfileRequest;
-import com.dadingcoding.web.controller.dto.response.ExceptResponse;
 import com.dadingcoding.web.controller.dto.response.GetProfileResponseDto;
 import com.dadingcoding.web.domain.Member;
 import com.dadingcoding.web.response.Response;

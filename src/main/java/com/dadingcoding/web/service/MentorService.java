@@ -3,8 +3,6 @@ package com.dadingcoding.web.service;
 import com.dadingcoding.web.controller.dto.request.*;
 import com.dadingcoding.web.controller.dto.response.*;
 import com.dadingcoding.web.domain.*;
-import com.dadingcoding.web.domain.QnA.Answer;
-import com.dadingcoding.web.domain.QnA.Question;
 import com.dadingcoding.web.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

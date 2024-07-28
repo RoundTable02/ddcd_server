@@ -1,8 +1,6 @@
 package com.dadingcoding.web.exception;
 
 import com.dadingcoding.web.response.ExceptResponse;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

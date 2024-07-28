@@ -1,6 +1,5 @@
 package com.dadingcoding.web.controller.dto.request;
 
-import com.dadingcoding.web.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

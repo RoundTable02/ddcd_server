@@ -2,7 +2,6 @@ package com.dadingcoding.web.domain.QnA;
 
 import com.dadingcoding.web.domain.BaseEntity;
 import com.dadingcoding.web.domain.Member;
-import com.fasterxml.jackson.databind.ser.Serializers;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;

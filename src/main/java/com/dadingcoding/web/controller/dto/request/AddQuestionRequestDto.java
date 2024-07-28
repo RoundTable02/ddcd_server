@@ -1,7 +1,6 @@
 package com.dadingcoding.web.controller.dto.request;
 
 import com.dadingcoding.web.domain.Member;
-import com.dadingcoding.web.domain.QnA.Question;
 import com.dadingcoding.web.domain.QuestionAnswer;
 import lombok.Data;
 
