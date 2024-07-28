@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -107,10 +108,10 @@ public class AdminService {
         Schedule schedule = Schedule.builder()
                 .mentee(prementor)
                 .scheduleTime(List.of(time.toString()))
+                .title(adminInterviewScheduleRequestDto.getTitle())
+                .content(adminInterviewScheduleRequestDto.getTitle())
+                .scheduleType(ScheduleType.INTERVIEW)
                 .build();
-
-        schedule.setTitle(adminInterviewScheduleRequestDto.getTitle());
-        schedule.setContent(adminInterviewScheduleRequestDto.getTitle());
 
         scheduleRepository.save(schedule);
     }
@@ -132,11 +133,11 @@ public class AdminService {
         Schedule schedule = Schedule.builder()
                 .mentee(mentee)
                 .scheduleTime(List.of(time.toString()))
+                .scheduleType(ScheduleType.CLASS)
                 .sessionNumber(adminClassScheduleRequestDto.getSessionNumber())
+                .title(adminClassScheduleRequestDto.getTitle())
+                .content(adminClassScheduleRequestDto.getLink())
                 .build();
-
-        schedule.setTitle(adminClassScheduleRequestDto.getTitle());
-        schedule.setContent(adminClassScheduleRequestDto.getLink());
 
         scheduleRepository.save(schedule);
     }
@@ -183,5 +184,123 @@ public class AdminService {
         Report report = reportRepository.findById(reportId)
                 .orElseThrow(() -> new NoSuchElementException("보고서가 존재하지 않습니다."));
         return ReportDetailResponseDto.toDto(report);
+    }
+
+
+    /**
+     * 멘토 - 멘티 매칭 알고리즘 (테스트 후 수정 필요)
+     */
+    static boolean[] visited; // 노드 방문 여부
+    static int[] matchedMentee; // 각 멘토에게 매칭된 학생 정보
+    static ArrayList<Integer>[] matchableList; // 연결 가능한 멘티 - 멘토 리스트
+
+    public List<MatchResponseDto> getMatches() {
+        List<Member> mentors = memberRepository.findAllByRole(Role.MENTOR);
+        List<Member> mentees = memberRepository.findAllByRole(Role.MENTEE);
+
+        int mentorSize = mentors.size();
+        int menteeSize = mentees.size();
+
+        // 간선 리스트
+        matchableList = new ArrayList[menteeSize];
+        for (int i = 0; i < menteeSize; i++) {
+            matchableList[i] = new ArrayList<>();
+        }
+
+        // 멘토-멘티 간선 연결
+        for (int i = 0; i < menteeSize; i++) {
+            List<AvailableSchedule> menteeAvailableSchedules = mentees.get(i).getAvailableSchedules();
+            for (int j = 0; j < mentorSize; j++) {
+                List<AvailableSchedule> mentorAvailableSchedules = mentors.get(j).getAvailableSchedules();
+                if (isMatchable(menteeAvailableSchedules, mentorAvailableSchedules)) {
+                    matchableList[i].add(j);
+                }
+            }
+        }
+
+        matchedMentee = new int[menteeSize];
+        for (int i = 0; i <= menteeSize; i++) {
+            matchedMentee[i] = -1;
+        }
+
+        int result = 0;
+        for (int i = 0; i <= menteeSize; i++) {
+            visited = new boolean[menteeSize];
+            if (dfs(i)) {
+                result++;
+            }
+        }
+
+        // dfs 결과 (matchedMentee)를 단순 리턴
+        List<MatchResponseDto> responseDtoList = new ArrayList<>();
+
+        for (int i = 0; i < matchedMentee.length; i++) {
+            Member targetMentor = mentors.get(i);
+            Member targetMentee = mentees.get(matchedMentee[i]);
+            MemberMatchDto mentorDto = MemberMatchDto.toDto(targetMentor);
+            MemberMatchDto menteeDto = MemberMatchDto.toDto(targetMentee);
+
+            MatchResponseDto dto = MatchResponseDto.builder()
+                    .mentor(mentorDto)
+                    .mentee(menteeDto)
+                    .build();
+
+            responseDtoList.add(dto);
+        }
+
+        return responseDtoList;
+    }
+
+    //dfs
+    public static boolean dfs(int node) {
+        if (visited[node]) {
+            return false;
+        }
+        visited[node] = true;
+
+        for (int i = 0; i < matchableList[node].size(); i++) {
+            int next = matchableList[node].get(i);
+            if (matchedMentee[next] == -1 || dfs(matchedMentee[next])) {
+                matchedMentee[next] = node;
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    // 멘티와 멘토가 매칭 가능한지 확인
+    private boolean isMatchable(List<AvailableSchedule> menteeSchedules, List<AvailableSchedule> mentorSchedules) {
+        menteeSchedules.retainAll(mentorSchedules);
+        if (menteeSchedules.size() < 4) {
+            // 최소 2시간 이상 스케줄이 겹쳐야 함
+            return false;
+        }
+
+        // DayOfWeek & LocalTime 으로 오름차순
+        menteeSchedules.sort(Comparator.comparingInt(AvailableSchedule::hashCode));
+
+        // 연속된 2시간이 있는지 체크
+        int check = 1;
+        for (int i = 1; i < menteeSchedules.size(); i++) {
+            if (check == 4) {
+                return true;
+            }
+            AvailableSchedule before = menteeSchedules.get(i - 1);
+            AvailableSchedule after = menteeSchedules.get(i);
+            if (before.getDayOfWeek().equals(after.getDayOfWeek())) {
+                if (after.getRank() - before.getRank() == 1) {
+                    check += 1;
+                }
+                else {
+                    check = 1;
+                }
+            }
+            else {
+                check = 1;
+            }
+        }
+
+        return false;
     }
 }

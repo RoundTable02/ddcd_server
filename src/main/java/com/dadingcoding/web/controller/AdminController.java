@@ -58,7 +58,10 @@ public class AdminController {
     }
 
     @PostMapping("/mentors/{mentorId}/mentees/{menteeId}/schedule")
-    public ResponseEntity<Response> addClassSchedule(@PathVariable Long mentorId, @PathVariable Long menteeId, @RequestBody AdminClassScheduleRequestDto adminClassScheduleRequestDto) {
+    public ResponseEntity<Response> addClassSchedule(
+            @PathVariable Long mentorId, @PathVariable Long menteeId,
+            @RequestBody AdminClassScheduleRequestDto adminClassScheduleRequestDto
+    ) {
         adminService.addClassSchedule(mentorId, menteeId, adminClassScheduleRequestDto);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new Response(200, "일정이 업데이트되었습니다."));
@@ -73,5 +76,12 @@ public class AdminController {
     @GetMapping("/reports/{reportId}")
     public ReportDetailResponseDto findReport(@PathVariable Long reportId) {
         return adminService.findReport(reportId);
+    }
+
+    @GetMapping("/matches")
+    public ListResponseDto<MatchResponseDto> getMatches() {
+        List<MatchResponseDto> matchDtos = adminService.getMatches();
+
+        return new ListResponseDto<>(matchDtos.size(), matchDtos);
     }
 }

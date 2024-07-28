@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalTime;
+import java.util.Objects;
 
 @Entity
 @Builder
@@ -30,4 +32,25 @@ public class AvailableSchedule extends BaseEntity {
     @Setter
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    public int getRank() {
+        // 9시 -> 1교시, 9시 30분 -> 2교시 ...
+        LocalTime firstTime = LocalTime.of(9, 0, 0);
+        return (int) (Duration.between(firstTime, time).toMinutes() / 30) + 1;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        AvailableSchedule that = (AvailableSchedule) o;
+        return dayOfWeek == that.dayOfWeek && Objects.equals(time, that.time);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), dayOfWeek, time);
+    }
+
 }

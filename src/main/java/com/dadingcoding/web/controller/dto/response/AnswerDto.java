@@ -1,6 +1,6 @@
 package com.dadingcoding.web.controller.dto.response;
 
-import com.dadingcoding.web.domain.QnA.Answer;
+import com.dadingcoding.web.domain.QuestionAnswer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +15,7 @@ public class AnswerDto {
     private String answer;
     private LocalDateTime answered_at;
 
-    public static AnswerDto toDto(Answer answer) {
+    public static AnswerDto toDto(QuestionAnswer answer) {
         return AnswerDto.builder()
                 .answer_id(answer.getId())
                 .answer(answer.getContent())

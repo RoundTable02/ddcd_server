@@ -2,11 +2,12 @@ package com.dadingcoding.web.controller.dto.response;
 
 import com.dadingcoding.web.domain.Report;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-@Getter
+@Getter @Builder
 @AllArgsConstructor
 public class ReportResponseDto {
     private Long id;
@@ -14,12 +15,12 @@ public class ReportResponseDto {
     private String content;
     private LocalDateTime createdDate;
 
-    public static ReportResponseDto fromEntity(Report report) {
-        return new ReportResponseDto(
-                report.getId(),
-                report.getTitle(),
-                report.getContent(),
-                report.getCreatedAt()
-        );
+    public static ReportResponseDto toDto(Report report) {
+        return ReportResponseDto.builder()
+                .id(report.getId())
+                .title(report.getTitle())
+                .content(report.getContent())
+                .createdDate(report.getCreatedAt())
+                .build();
     }
 }

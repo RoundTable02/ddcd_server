@@ -2,6 +2,7 @@ package com.dadingcoding.web.controller.dto.response;
 
 import com.dadingcoding.web.domain.QnA.Answer;
 import com.dadingcoding.web.domain.QnA.Question;
+import com.dadingcoding.web.domain.QuestionAnswer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,13 +19,13 @@ public class AnswerResponseDto {
     private LocalDateTime createdAt;
     private String answer;
 
-    public static AnswerResponseDto toDto(Question question) {
+    public static AnswerResponseDto toDto(QuestionAnswer answer) {
         return AnswerResponseDto.builder()
-                .questionId(question.getId())
-                .studentName(question.getMember().getUsername())
-                .question(question.getContent())
-                .createdAt(question.getCreatedAt())
-                .answer(null) // TODO : QNA 구조 변경 후 추가
+                .questionId(answer.getId())
+                .studentName(answer.getMember().getUsername())
+                .question(answer.getQuestion().getContent())
+                .createdAt(answer.getCreatedAt())
+                .answer(answer.getContent())
                 .build();
     }
 }

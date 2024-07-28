@@ -15,6 +15,4 @@ import java.time.LocalTime;
 public class AvailableScheduleReqeustDto {
     private DayOfWeek dayOfWeek;
     private LocalTime time;
-
-
 }
