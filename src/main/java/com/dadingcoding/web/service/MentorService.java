@@ -3,6 +3,8 @@ package com.dadingcoding.web.service;
 import com.dadingcoding.web.controller.dto.request.*;
 import com.dadingcoding.web.controller.dto.response.*;
 import com.dadingcoding.web.domain.*;
+import com.dadingcoding.web.exception.ErrorCode;
+import com.dadingcoding.web.exception.NoAuthorityToAccessException;
 import com.dadingcoding.web.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -91,13 +93,25 @@ public class MentorService {
                 .collect(Collectors.toList());
     }
 
-    public void addOrUpdateReport(Member member, UpdateReportRequestDto request) {
+    public void createReport(Member member, ReportRequestDto requestDto) {
         Report report = Report.builder()
                 .member(member)
-                .content(request.getContent())
+                .content(requestDto.getContent())
+                .title(requestDto.getTitle())
                 .build();
 
         reportRepository.save(report);
+    }
+
+    public void updateReport(Long reportId, Member member, ReportRequestDto requestDto) {
+        Report report = reportRepository.findById(reportId)
+                .orElseThrow(() -> new NoSuchElementException("해당하는 보고서가 없습니다."));
+
+        if (report.getMember().getId() != member.getId()) {
+            throw new NoAuthorityToAccessException(ErrorCode.NO_AUTHORITY_TO_ACCESS);
+        }
+
+        report.updateReport(requestDto.getTitle(), requestDto.getContent());
     }
 
     public void addAvailableTimes(Member member, AvailableScheduleListReqeustDto availableScheduleListReqeustDto) {
