@@ -39,3 +39,5 @@ out/
 
 key.pem
 ddcdWebKey.pem
+
+.env
