@@ -3,7 +3,7 @@ spring:
     active: ${profile}
   jpa:
     hibernate:
-#      ddl-auto: create
+      ddl-auto: create
     properties:
       hibernate:
         #        show_sql: true
@@ -13,8 +13,7 @@ spring:
         #  org.hibernate.type: trace
 
 jwt:
-  secret: ${jwt}
-#  공개 금지 (공개시 ignore에 추가 필요)
+  secret: ${JWT_SECRET}
 
 logging:
   level:
