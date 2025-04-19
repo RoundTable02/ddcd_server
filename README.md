@@ -48,6 +48,7 @@
 <br/>
 
 <b>ETC</b><br/>
+- ER Diagram 작성
 - 기타 사용자, 관리자, 프로그램 도메인에 대한 MVC 패턴 기반의 CRUD 로직 작성
 - EC2 + Docker Compose를 이용해 서버 배포
 - ExceptionHandler 도입으로 비즈니스 로직으로부터 예외 처리 관심사 분리
